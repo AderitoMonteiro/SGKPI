@@ -20,4 +20,3 @@ class User(models.Model):
     def __str__(self):
         return self.username
 
-python manage.py startapp login
