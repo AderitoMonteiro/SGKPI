@@ -20,5 +20,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('login.urls')),
-    path('master/', include('master.urls')),
+    path('master/', include('master.urls'),name="master"),
+    path('master/dashboard/add/', include('master.urls'),name="create_OE")
 ]
