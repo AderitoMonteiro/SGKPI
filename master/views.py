@@ -55,3 +55,31 @@ def editar_objetivo_estrategico(request):
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def delete_objetivo_estrategico(request):
+
+     if request.method == "POST":
+      try:
+                    id_oes= request.POST.get("id")
+
+                    OE=get_object_or_404(objetivo_estrategico, id=id_oes)
+                    OE.delete()
+                    return JsonResponse({'status': 'success', 'message': 'Registo apagado com sucesso!'})
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def delete_checkbox_objetivo_estrategico(request):
+
+     if request.method == "POST":
+      try:
+                    id_oes= request.POST.get("id")
+                    if id_oes:
+                         id_oes = id_oes.split(",") 
+                         objetivo_estrategico.objects.filter(id__in=id_oes).delete()
+                    return JsonResponse({'status': 'success', 'message': 'Registo apagado com sucesso!'})
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)

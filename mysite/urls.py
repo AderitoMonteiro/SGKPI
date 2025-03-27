@@ -21,7 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('login.urls')),
     path('master/', include('master.urls'),name="master"),
-    path('master/add/', include('master.urls'),name="create_OE"),
+    path('master/list/list_OE/add/', include('master.urls'),name="create_OE"),
     path('master/list/', include('master.urls'),name="list_OE"),
-    path('master/list/list_OE/editar/', include('master.urls'),name="editar_OE")
+    path('master/list/list_OE/editar/', include('master.urls'),name="editar_OE"),
+    path('master/list/list_OE/delete/', include('master.urls'),name="delete_OE"),
+    path('master/list/list_OE/delect_checkbox/', include('master.urls'),name="delect_checkbox_OE")
 ]

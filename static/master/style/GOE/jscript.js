@@ -1,10 +1,10 @@
-$(document).ready(function(){
+jqOld(document).ready(function(){
 	// Activate tooltip
-	$('[data-toggle="tooltip"]').tooltip();
+	jqOld('[data-toggle="tooltip"]').tooltip();
 	
 	// Select/Deselect checkboxes
 	var checkbox = $('table tbody input[type="checkbox"]');
-	$("#selectAll").click(function(){
+	jqOld("#selectAll").click(function(){
 		if(this.checked){
 			checkbox.each(function(){
 				this.checked = true;                        
