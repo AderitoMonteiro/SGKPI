@@ -21,5 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('login.urls')),
     path('master/', include('master.urls'),name="master"),
-    path('master/dashboard/add/', include('master.urls'),name="create_OE")
+    path('master/add/', include('master.urls'),name="create_OE"),
+    path('master/list/', include('master.urls'),name="list_OE"),
+    path('master/list/list_OE/editar/', include('master.urls'),name="editar_OE")
 ]
