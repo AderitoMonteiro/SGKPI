@@ -5,6 +5,8 @@ from .models import objetivo_estrategico,rastreabilidade,meta
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from django.db import connection
+
 
 
 #start modulo objetivo_estrategico
@@ -99,14 +101,25 @@ def list_create_objetivo_estrategico(request):
 #start modulo Rastreabilidade
 def list_rastreabilidade(request):
 
-    ras_list = rastreabilidade.objects.all()
-    me_list = list(meta.objects.all())
-    paginator = Paginator(ras_list, 7)
+     query = '''
+              select ras.id as id, ras.descricao as descricao, me.descricao as meta
+              from master_rastreabilidade as ras
+              left join master_meta as me on ras.id_tabela_meta=me.id
+             '''
+     with connection.cursor() as cursor:
+          cursor.execute(query)
 
-    page_number = request.GET.get("page")  # Obter o número da página da URL
-    oes = paginator.get_page(page_number)
+          colunas = [col[0] for col in cursor.description] 
+          resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
 
-    return render(request, "master/RAS/index.html", {"rastreabilidade":oes,"meta":me_list}) 
+          ras_list = resultados
+          me_list = list(meta.objects.all())
+          paginator = Paginator(ras_list, 7)
+          print(paginator)
+          page_number = request.GET.get("page")  
+          oes = paginator.get_page(page_number)
+          
+          return render(request, "master/RAS/index.html", {"rastreabilidade":oes,"meta":me_list}) 
 
 @csrf_exempt
 def create_rastreabilidade(request):
