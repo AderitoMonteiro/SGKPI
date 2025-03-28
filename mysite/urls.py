@@ -22,8 +22,16 @@ urlpatterns = [
     path('auth/', include('login.urls')),
     path('master/', include('master.urls'),name="master"),
     path('master/list/list_OE/add/', include('master.urls'),name="create_OE"),
-    path('master/list/', include('master.urls'),name="list_OE"),
+    path('master/list/', include('master.urls'),name="master_list"),
     path('master/list/list_OE/editar/', include('master.urls'),name="editar_OE"),
     path('master/list/list_OE/delete/', include('master.urls'),name="delete_OE"),
-    path('master/list/list_OE/delect_checkbox/', include('master.urls'),name="delect_checkbox_OE")
-]
+    path('master/list/list_OE/delect_checkbox/', include('master.urls'),name="delect_checkbox_OE"),
+    path('master/list/list_RAS/add/', include('master.urls'),name="add_ras"),
+    path('master/list/list_RAS/editar/', include('master.urls'),name="editar_RAS"),
+    path('master/list/list_RAS/delete/', include('master.urls'),name="delete_RAS"),  
+    path('master/list/list_RAS/delect_checkbox/', include('master.urls'),name="delect_checkbox_RAS"),
+    path('master/list/list_ME/add/', include('master.urls'),name="add_ME"),    
+    path('master/list/list_ME/delete/', include('master.urls'),name="delete_ME"),
+    path('master/list/list_ME/editar/', include('master.urls'),name="editar_ME"),
+    path('master/list/list_ME/delect_checkbox/', include('master.urls'),name="delect_checkbox"),
+    ]

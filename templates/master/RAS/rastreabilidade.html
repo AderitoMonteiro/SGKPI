@@ -5,7 +5,7 @@
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2><b>OBJETIVO ESTRATEGICO</b></h2>
+						<h2><b>Rastreabilidade</b></h2>
 					</div>
 					
 					<div class="col-sm-6" style="text-align:right !important;">
@@ -25,29 +25,30 @@
 						</th>
 						<th>ID</th>
 						<th>DESCRIÇÃO</th>
+						<th>META</th>
 						<th>ACÕES</th>
 					</tr>
 				</thead>
 				<tbody>
-				{% for oes_list in objetivo_estrategico %}
+				{% for ras_list in rastreabilidade %}
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{ oes_list.id }}" class="user-checkbox" name="options[]" value="{{ oes_list.id }}">
-								<label for="checkbox{{ oes_list.id }}"></label>
+								<input type="checkbox" id="checkbox{{ ras_list.id }}" class="user-checkbox" name="options[]" value="{{ ras_list.id }}">
+								<label for="checkbox{{ ras_list.id }}"></label>
 							</span>
 						</td>
-						<td>{{oes_list.id}}</td>
-						<td>{{oes_list.descricao}}</td>
-						
+						<td>{{ras_list.id}}</td>
+						<td>{{ras_list.descricao}}</td>
+						<td>{{ras_list.id_tabela_meta}}</td>
 						<td>
-							<a href="#editEmployeeModal"   data-id="{{ oes_list.id }}" data-descricao="{{ oes_list.descricao }}" class="edit" onclick="editar_OE(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" data-id="{{ oes_list.id }}" class="delete" data-toggle="modal" onclick="delete_OE(this)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a href="#editEmployeeModal"   data-id="{{ ras_list.id }}" data-descricao="{{ ras_list.descricao }}" class="edit" onclick="editar_OE(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteEmployeeModal" data-id="{{ ras_list.id }}" class="delete" data-toggle="modal" onclick="delete_OE(this)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
 					{% empty %}
 					 <tr>
-						<td colspan="4">Nenhum objetivo Estrategico encontrado.</td>
+						<td colspan="4">Nenhum rastreabilidade encontrado.</td>
 					 </tr>
 				 {% endfor %}					
 				</tbody>
@@ -78,7 +79,7 @@
 			<form action="#">
 				{% csrf_token %}
 				<div class="modal-header">						
-					<h4 class="modal-title">Novo Objetivo Estrategico</h4>
+					<h4 class="modal-title">Novo Rastreabilidade</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
@@ -86,10 +87,23 @@
 						<label>Descrição</label>
 						<input type="text" id="descricao" class="form-control" required>
 					</div>				
+					<div class="form-group">
+						<label for="opcao">Meta</label>
+						<select class="form-control" id="meta-select">
+
+							<option value="">--Por favor, escolha uma opção--</option>
+
+							{% for meta_list in meta %}
+
+							 <option value="{{meta_list.id}}">{{meta_list.descricao}}</option>
+
+							{% endfor %}
+						</select>
+					</div>	
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" class="btn btn-success" onclick="registrar_OE()" value="Guardar">
+					<input type="submit" class="btn btn-success" onclick="registrar_RAS()" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -115,7 +129,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" class="btn btn-info" onclick="editar_OE_model()" value="Guardar">
+					<input type="submit" class="btn btn-info" onclick="editar_RAS_model()" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -125,9 +139,9 @@
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="#">
+			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Delete Employee</h4>
+					<h4 class="modal-title">Apagar Rastreabilidade</h4>
 					<input id="id_delete" class="form-control" type="hidden">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
@@ -136,7 +150,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete" onclick="delete_OE_model()">
+					<input type="submit" class="btn btn-danger" value="Delete" onclick="delete_RAS_model()">
 				</div>
 			</form>
 		</div>
@@ -145,11 +159,11 @@
 <div id="deleteEmployee" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="#">
+			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Delete Employee</h4>
+					<h4 class="modal-title">Apagar Rastreabilidade</h4>
 					<input id="id_delete" class="form-control" type="hidden">
-					<input id="id_url" class="form-control" type="hidden" value="OE">
+					<input id="id_url" class="form-control" type="hidden" value="RAS">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
