@@ -5,7 +5,7 @@
 			<div class="table-title">
 				<div class="row">
 					<div class="col-sm-6">
-						<h2><b>Meta</b></h2>
+						<h2><b>Ação</b></h2>
 					</div>
 					
 					<div class="col-sm-6" style="text-align:right !important;">
@@ -25,30 +25,38 @@
 						</th>
 						<th>ID</th>
 						<th>DESCRIÇÃO</th>
-						<th>KPI</th>
+						<th>ATIVIDADE ANUAL</th>
+						<th>PROCESSO</th>
+						<th>OBS</th>
+						<th>DATA INICIO</th>
+						<th>DATA FIM</th>
 						<th>ACÕES</th>
 					</tr>
 				</thead>
 				<tbody>
-				{% for me_list in meta %}
+				{% for ac_list in acao %}
 					<tr>
 						<td>
 							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{ me_list.id }}" class="user-checkbox" name="options[]" value="{{ me_list.id }}">
-								<label for="checkbox{{ me_list.id }}"></label>
+								<input type="checkbox" id="checkbox{{ ac_list.id }}" class="user-checkbox" name="options[]" value="{{ ac_list.id }}">
+								<label for="checkbox{{ ac_list.id }}"></label>
 							</span>
 						</td>
-						<td>{{me_list.id}}</td>
-						<td>{{me_list.descricao}}</td>
-						<td>{{me_list.kpi}}</td>
+						<td>{{ac_list.id}}</td>
+						<td>{{ac_list.descricao}}</td>
+						<td>{{ac_list.atividade_anual}}</td>
+						<td>{{ac_list.processo}}</td>
+						<td>{{ac_list.obs}}</td>
+						<td>{{ac_list.data_inicio| date:"j \d\e F \d\e Y" }}</td>
+						<td>{{ac_list.data_fim | date:"j \d\e F \d\e Y" }}</td>
 						<td>
-							<a href="#editEmployeeModal"   data-id="{{ me_list.id }}" data-descricao="{{ me_list.descricao }}" class="edit" onclick="editar_OE(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-							<a href="#deleteEmployeeModal" data-id="{{ me_list.id }}" class="delete" data-toggle="modal" onclick="delete_OE(this)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+							<a href="#editEmployeeModal"   data-id="{{ ac_list.id }}" data-descricao="{{ ac_list.descricao }}" class="edit" onclick="editar_OE(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#deleteEmployeeModal" data-id="{{ ac_list.id }}" class="delete" data-toggle="modal" onclick="delete_OE(this)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
 					{% empty %}
 					 <tr>
-						<td colspan="4">Nenhum meta encontrado.</td>
+						<td colspan="4">Nenhum ação  encontrado.</td>
 					 </tr>
 				 {% endfor %}					
 				</tbody>
@@ -79,32 +87,55 @@
 			<form action="#">
 				{% csrf_token %}
 				<div class="modal-header">						
-					<h4 class="modal-title">Novo Meta</h4>
+					<h4 class="modal-title">Adicionar Ação</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
 					<div class="form-group">
 						<label>Descrição</label>
 						<input type="text" id="descricao" class="form-control" required>
-					</div>						
+					</div>	
 					<div class="form-group">
-						<label for="opcao">KPI</label>
-						<select class="form-control" id="meta-kpi-select">
-	
+						<label>Data Inicio:</label>
+						<input type="date" id="data_inicio" readonly>	
+						<br><label style="margin-right: 8px;">Data Fim :</label>
+						<input type="date" id="data_fim" required>		
+					</div>	
+									
+					<div class="form-group">
+						<label for="opcao">Atividade Anual</label>
+						<select class="form-control" id="ac-aa-select" required>
+
 							<option value="">--Por favor, escolha uma opção--</option>
-	
-							{% for kpi_list in kpi %}
-	
-							 <option value="{{kpi_list.id}}">{{kpi_list.descricao}}</option>
-	
+
+							{% for p_list in atividade_anual %}
+
+							 <option value="{{p_list.id}}">{{p_list.descricao}}</option>
+
 							{% endfor %}
 						</select>
 					</div>	
+					<div class="form-group">
+						<label for="opcao">Processo</label>
+						<select class="form-control" id="ac-p-select" required>
+
+							<option value="">--Por favor, escolha uma opção--</option>
+
+							{% for p_list in processo %}
+
+							 <option value="{{p_list.id}}">{{p_list.descricao}}</option>
+
+							{% endfor %}
+						</select>
+					</div>	
+					<label>OBS:</label>
+					<div class="form-group">
+						<textarea id="w3review" name="w3review" rows="4" cols="60"></textarea>
+					</div>	
 				</div>
-				
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" class="btn btn-success" onclick="registrar_ME()" value="Guardar">
+					<input type="submit" class="btn btn-success" onclick="registrar_AC()" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -114,9 +145,9 @@
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="#">
+			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Editar Meta</h4>
+					<h4 class="modal-title">Editar Ação</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
@@ -126,26 +157,51 @@
 							<input id="id_editar" class="form-control" type="hidden">
 							<input type="text" id="descricao_editar" class="form-control" required>
 						</div>
+
 						<div class="form-group">
-							<label for="opcao">KPI</label>
-							<select class="form-control" id="meta-kpi-edit-select">
-		
+							<label>Data Inicio:</label>
+							<input type="date" id="data_inicio_edit" readonly>	
+							<br><label style="margin-right: 8px;">Data Fim :</label>
+							<input type="date" id="data_fim_edit" required>		
+						</div>	
+										
+						<div class="form-group">
+							<label for="opcao">Atividade Anual</label>
+							<select class="form-control" id="ac-aa-select_edit" required>
+	
 								<option value="">--Por favor, escolha uma opção--</option>
-		
-								{% for kpi_list in kpi %}
-		
-								 <option value="{{kpi_list.id}}">{{kpi_list.descricao}}</option>
-		
+	
+								{% for p_list in atividade_anual %}
+	
+								 <option value="{{p_list.id}}">{{p_list.descricao}}</option>
+	
 								{% endfor %}
 							</select>
 						</div>	
-					</div>
+						<div class="form-group">
+							<label for="opcao">Processo</label>
+							<select class="form-control" id="ac-p-select_edit" required>
+	
+								<option value="">--Por favor, escolha uma opção--</option>
+	
+								{% for p_list in processo %}
+	
+								 <option value="{{p_list.id}}">{{p_list.descricao}}</option>
+	
+								{% endfor %}
+							</select>
+						</div>	
 
+						<label>OBS:</label>
+						<div class="form-group">
+							<textarea id="w3review-edit" name="w3review-edit" rows="4" cols="58"></textarea>
+						</div>	
+					</div>
 					
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" class="btn btn-info" onclick="editar_ME_model()" value="Guardar">
+					<input type="submit" class="btn btn-info" onclick="editar_AC_model()" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -155,9 +211,9 @@
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="#">
+			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Apagar Meta</h4>
+					<h4 class="modal-title">Apagar Ação</h4>
 					<input id="id_delete" class="form-control" type="hidden">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
@@ -166,7 +222,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete" onclick="delete_ME_model()">
+					<input type="submit" class="btn btn-danger" value="Delete" onclick="delete_AC_model()">
 				</div>
 			</form>
 		</div>
@@ -177,9 +233,9 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Apagar Meta</h4>
+					<h4 class="modal-title">Apagar Ação</h4>
 					<input id="id_delete" class="form-control" type="hidden">
-					<input id="id_url" class="form-control" type="hidden" value="ME">
+					<input id="id_url" class="form-control" type="hidden" value="AC">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					

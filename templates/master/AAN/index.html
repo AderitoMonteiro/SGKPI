@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pt">
+  <head>
+  	<title>Sidebar 09</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% load static %} 
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+		
+		  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+		  <link rel="stylesheet" href="{% static 'master/style/style.css' %}">
+     
+      <!-- start style modulo gestao obj estrategico -->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+      <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+      <script>
+        var jqOld = jQuery.noConflict(); // Salva a versão antiga do jQuery
+    </script>
+        <script src="{% static 'master/style/GOE/jscript.js' %}"></script>
+
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+      <!-- end -->
+      {% csrf_token %}
+      <meta name="csrf-token" content="{{ csrf_token }}">
+      
+      </head>
+  <body>
+		
+		<div class="wrapper d-flex align-items-stretch">
+	
+      {% include 'template/sidebar.html' %}
+
+        <!-- Page Content  -->
+      <div id="content" class="p-4 p-md-5 pt-5">
+        {% include 'master/AAN/atividade_anual.html' %}
+      </div>
+		</div>
+
+    <script src="{% static 'master/js/jquery.min.js' %}"></script>
+    <script src="{% static 'master/js/popper.js'%}"></script>
+    <script src="{% static 'master/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'master/js/main.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'master/js/form.js' %}"></script>
+    
+
+    <script>
+          document.addEventListener("DOMContentLoaded", function() {
+              flatpickr("#data_inicio", {
+                  dateFormat: "Y-m-d",
+                  locale: "pt"
+              });
+          });
+
+          document.addEventListener("DOMContentLoaded", function() {
+              flatpickr("#data_fim", {
+                  dateFormat: "Y-m-d",
+                  locale: "pt"
+              });
+          });
+          document.addEventListener("DOMContentLoaded", function() {
+              flatpickr("#data_inicio_edit", {
+                  dateFormat: "Y-m-d",
+                  locale: "pt"
+              });
+          });
+          document.addEventListener("DOMContentLoaded", function() {
+              flatpickr("#data_fim_edit", {
+                  dateFormat: "Y-m-d",
+                  locale: "pt"
+              });
+          });
+    </script>
+    
+  </body>
+</html>

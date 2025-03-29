@@ -111,9 +111,21 @@ document.getElementById("id_deleteCk").addEventListener("click", function() {
                 case 'OE':
                         url='delect_checkbox/delect_checkbox_OE/'
                     break;
-                    case 'ME':
+                case 'ME':
                         url='delect_checkbox/delect_checkbox_ME/'
                     break;
+                case 'KPI':
+                        url='delect_checkbox/delect_checkbox_KPI/'
+                break;
+                case 'OA':
+                        url='delect_checkbox/delect_checkbox_OA/'
+                break;
+                case 'AAN':
+                    url='delect_checkbox/delect_checkbox_AAN/'
+                break;
+                case 'AC':
+                    url='delect_checkbox/delect_checkbox_AC/'
+                break;
                 default:
                     console.log("erro");
              }
@@ -220,9 +232,12 @@ function delete_RAS_model() {
 
 function registrar_ME() {
     const descricao = document.getElementById('descricao').value;
+    let select = document.getElementById("meta-kpi-select");
+    let textoSelecionado = select.value;
     // Dados para enviar
     const data = {
         "descricao": descricao,
+        "id_kpi":textoSelecionado,
         "X-CSRFToken": getCSRFToken()
     };
 
@@ -268,16 +283,398 @@ function delete_ME_model() {
 function editar_ME_model() {
     const descricao = document.getElementById('descricao_editar').value;
     const id = document.getElementById('id_editar').value;
+    let select = document.getElementById("meta-kpi-edit-select");
+    let textoSelecionado = select.value;
     // Dados para enviar
     const data = {
         "descricao": descricao,
         "id": id,
+        "id_kpi":textoSelecionado,
         "X-CSRFToken": getCSRFToken()
     };
 
     // Configuração da requisição
     $.ajax({
         url: 'editar/editar_ME/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
+// start kpi
+
+function registrar_KPI() {
+    const descricao = document.getElementById('descricao').value;
+    let select = document.getElementById("oe-select");
+    let textoSelecionado =select.value;
+
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id_objeto_estrategico": textoSelecionado,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'add/add_KPI/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+}
+
+function registrar_RAS() {
+    const descricao = document.getElementById('descricao').value;
+    let select = document.getElementById("meta-select");
+    let textoSelecionado =select.value;
+
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id_tabela_meta": textoSelecionado,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'add/add_RAS/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+}
+
+
+function editar_KPI_model() {
+    const descricao = document.getElementById('descricao_editar').value;
+    const id = document.getElementById('id_editar').value;
+    let select = document.getElementById("oe-select");
+    let textoSelecionado =select.value;    
+
+    
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id": id,
+        "id_objeto_estrategico":textoSelecionado,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'editar/editar_KPI/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
+
+function delete_KPI_model() {
+
+    const id = document.getElementById('id_delete').value;
+    // Dados para enviar
+    const data = {
+        "id": id,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'delete/delete_KPI/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
+
+function registrar_OA() {
+    const descricao = document.getElementById('descricao').value;
+    let select = document.getElementById("kpi-select");
+    let textoSelecionado =select.value;
+
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id_kpi": textoSelecionado,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'add/add_OA/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+}
+
+function editar_OA_model() {
+    const descricao = document.getElementById('descricao_editar').value;
+    const id = document.getElementById('id_editar').value;
+    let select = document.getElementById("kpi-editar");
+    let textoSelecionado =select.value;    
+
+    
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id": id,
+        "id_kpi":textoSelecionado,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'editar/editar_OA/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
+
+function delete_OA_model() {
+
+    const id = document.getElementById('id_delete').value;
+    // Dados para enviar
+    const data = {
+        "id": id,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'delete/delete_OA/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
+
+function registrar_AAN() {
+
+    const descricao = document.getElementById('descricao').value;
+    let select = document.getElementById("aan-oa-select");
+    let data_inicio = document.getElementById("data_inicio").value;
+    let data_fim = document.getElementById("data_fim").value;
+    let textoSelecionado =select.value;
+
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id_objetivo_anual": textoSelecionado,
+        "data_inicio":data_inicio,
+        "data_fim":data_fim,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'add/add_AAN/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+}
+
+function editar_AAN_model() {
+    
+    const descricao = document.getElementById('descricao_editar').value;
+    const id = document.getElementById('id_editar').value;
+    let select = document.getElementById("aan-oa-edit-select");
+    let data_inicio = document.getElementById("data_inicio_edit").value;
+    let data_fim = document.getElementById("data_fim_edit").value;
+    let textoSelecionado =select.value;
+
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id_objetivo_anual": textoSelecionado,
+        "data_inicio":data_inicio,
+        "data_fim":data_fim,
+        "id":id,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'editar/editar_AAN/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
+
+function delete_AAN_model() {
+
+    const id = document.getElementById('id_delete').value;
+    // Dados para enviar
+    const data = {
+        "id": id,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'delete/delete_AAN/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
+
+
+function registrar_AC() {
+
+    const descricao = document.getElementById('descricao').value;
+    const obs = document.getElementById('w3review').value;
+    let select_aan = document.getElementById("ac-aa-select");
+    let select_p = document.getElementById("ac-p-select");
+    let data_inicio = document.getElementById("data_inicio").value;
+    let data_fim = document.getElementById("data_fim").value;
+
+    let textoSelecionado_aan =select_aan.value;
+    let textoSelecionado_p =select_p.value;
+
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id_atividade_anual": textoSelecionado_aan,
+        "id_processo": textoSelecionado_p,
+        "data_inicio":data_inicio,
+        "data_fim":data_fim,
+        "X-CSRFToken": getCSRFToken(),
+        "obs":obs
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'add/add_AC/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+}
+
+function editar_AC_model() {
+    
+    const descricao = document.getElementById('descricao_editar').value;
+    let select_aan = document.getElementById("ac-aa-select_edit");
+    const obs = document.getElementById('w3review-edit').value;
+    let select_p = document.getElementById("ac-p-select_edit");
+    let data_inicio = document.getElementById("data_inicio_edit").value;
+    let data_fim = document.getElementById("data_fim_edit").value;
+    const id = document.getElementById('id_editar').value;
+    let textoSelecionado_aan =select_aan.value;
+    let textoSelecionado_p =select_p.value;
+
+    // Dados para enviar
+    const data = {
+        "descricao": descricao,
+        "id_atividade_anual": textoSelecionado_aan,
+        "id_processo": textoSelecionado_p,
+        "data_inicio":data_inicio,
+        "data_fim":data_fim,
+        "id":id,
+        "obs":obs,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'editar/editar_AC/',
+        type: 'POST',
+        data: data,
+        success: function(data) {
+            alert(data.message);
+        },
+        error: function(xhr, status, error) {
+            alert('Erro: ' + xhr.responseJSON.message);
+        }
+    });
+
+}
+
+
+function delete_AC_model() {
+
+    const id = document.getElementById('id_delete').value;
+    // Dados para enviar
+    const data = {
+        "id": id,
+        "X-CSRFToken": getCSRFToken()
+    };
+
+    // Configuração da requisição
+    $.ajax({
+        url: 'delete/delete_AC/',
         type: 'POST',
         data: data,
         success: function(data) {

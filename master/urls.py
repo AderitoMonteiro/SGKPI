@@ -1,8 +1,7 @@
 from django.urls import path
 
-from .views import master_view,create_objetivo_estrategico,list_create_objetivo_estrategico,editar_objetivo_estrategico,delete_objetivo_estrategico,delete_checkbox_objetivo_estrategico,list_rastreabilidade,create_rastreabilidade,editar_rastreabilidade,delete_rastreabilidade,delete_checkbox_rastreabilidade,list_meta,create_meta, delete_rastreabilidade,editar_meta,delete_meta,delete_checkbox_meta
+from .views import master_view,create_objetivo_estrategico,list_create_objetivo_estrategico,editar_objetivo_estrategico,delete_objetivo_estrategico,delete_checkbox_objetivo_estrategico,list_rastreabilidade,create_rastreabilidade,editar_rastreabilidade,delete_rastreabilidade,delete_checkbox_rastreabilidade,list_meta,create_meta, delete_rastreabilidade,editar_meta,delete_meta,delete_checkbox_meta,list_kpi,create_kpi,editar_kpi,delete_kpi, delete_checkbox_kpi, list_OA,create_OA,editar_OA,delete_OA,delete_checkbox_OA,list_AAN,create_AAN,editar_AAN,delete_AAN,delete_checkbox_AAN,list_AC,create_AC,editar_AC,editar_AC,delete_AC,delect_checkbox_AC
 
-app_name = "master"
 urlpatterns = [
    path('dashboard/', master_view, name='dashboard'),
    path('add_OE/',  create_objetivo_estrategico, name='create_OE'),
@@ -20,4 +19,24 @@ urlpatterns = [
    path('delete_ME/', delete_meta, name='delete_ME'),
    path('editar_ME/', editar_meta, name='editar_ME'),
    path('delect_checkbox_ME/', delete_checkbox_meta, name='delect_checkbox_ME'),
+   path('list_KPI/', list_kpi, name='list_kpi'),
+   path('add_KPI/',  create_kpi, name='add_KPI'),
+   path('editar_KPI/', editar_kpi, name='editar_KPI'),
+   path('delete_KPI/', delete_kpi, name='editar_KPI'),
+   path('delect_checkbox_KPI/', delete_checkbox_kpi, name='delect_checkbox_KPI'),
+   path('list_OA/', list_OA, name='list_OA'),
+   path('add_OA/', create_OA, name='create_OA'),
+   path('editar_OA/', editar_OA, name='editar_OA'),
+   path('delete_OA/', delete_OA, name='delete_OA'),
+   path('delect_checkbox_OA/', delete_checkbox_OA, name='delect_checkbox_OA'),
+   path('list_AAN/', list_AAN, name='list_AAN'),
+   path('add_AAN/', create_AAN, name='create_AAN'),
+   path('editar_AAN/', editar_AAN, name='editar_AAN'),
+   path('delete_AAN/', delete_AAN, name='delete_AAN'),
+   path('delect_checkbox_AAN/', delete_checkbox_AAN, name='delect_checkbox_AAN'),
+   path('list_AC/', list_AC, name='list_AC'),
+   path('add_AC/', create_AC, name='create_AC'),
+   path('editar_AC/', editar_AC, name='editar_AC'),
+   path('delete_AC/', delete_AC, name='editar_AC'),
+   path('delect_checkbox_AC/', delect_checkbox_AC, name='delect_checkbox_AC'),
 ]
