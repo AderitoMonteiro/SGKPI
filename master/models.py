@@ -62,6 +62,12 @@ class processo(models.Model):
     datecreate = models.DateTimeField(auto_now_add=True)
     dateupdate = models.DateTimeField(auto_now=True)
  
+class departamento(models.Model):
+    id = models.AutoField(primary_key=True)
+    descricao = models.CharField(max_length=100)
+    status = models.BooleanField(default=True)
+    datecreate = models.DateTimeField(auto_now_add=True)
+    dateupdate = models.DateTimeField(auto_now=True)
 
 class acao(models.Model):
     id = models.AutoField(primary_key=True)
@@ -70,6 +76,10 @@ class acao(models.Model):
     data_inicio =  models.DateField(default=True)
     data_fim= models.DateField(default=True)
     id_atividade_anual = models.IntegerField(default=True)
+    id_departamento_responsavel = models.IntegerField(default=True)
+    responsavel_nome = models.CharField(max_length=100,default=True)
+    id_departamento_auxiliar = models.IntegerField(default=True)
+    responsavel_auxiliar_nome = models.CharField(max_length=100,default=True)
     obs = models.CharField(max_length=500)
     id_processo = models.IntegerField(default=True)
     datecreate = models.DateTimeField(auto_now_add=True)

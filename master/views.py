@@ -1,7 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from django.template import loader
 from django.http import HttpResponse
-from .models import objetivo_estrategico,rastreabilidade,meta,kpi,objetivo_anual,atividade_anual,acao,processo
+from .models import objetivo_estrategico,rastreabilidade,meta,kpi,objetivo_anual,atividade_anual,acao,processo,departamento
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.paginator import Paginator
@@ -19,14 +19,23 @@ def create_objetivo_estrategico(request):
 
     if request.method == "POST":
       try:
+ 
                     descricao = request.POST.get("descricao")
                     status = "1"
 
-                    objetivo_estrategico.objects.create(
-                         descricao=descricao,
-                         status=status
-                    )
-                    return JsonResponse({'status': 'success', 'message': 'Registo feito com sucesso!'})
+                    validate = objetivo_estrategico.objects.filter(descricao=descricao).count()
+
+                    if validate==0:
+                              objetivo_estrategico.objects.create(
+                                   descricao=descricao,
+                                   status=status
+                              )
+                              message='Registo criado com sucesso!'
+                              status= 'success'
+                    else:
+                         message='A descrição inserido ja existe!!'
+                         status= 'error'
+                    return JsonResponse({'status':status, 'message': message })
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -49,11 +58,20 @@ def editar_objetivo_estrategico(request):
       try:
                     descricao = request.POST.get("descricao")
                     id_oes= request.POST.get("id")
+                    
+                    validate = objetivo_estrategico.objects.filter(descricao=descricao).count()
 
-                    OE=get_object_or_404(objetivo_estrategico, id=id_oes)
-                    OE.descricao = descricao
-                    OE.save()
-                    return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    if validate==0:
+                              OE=get_object_or_404(objetivo_estrategico, id=id_oes)
+                              OE.descricao = descricao
+                              OE.save()
+                              message='Registo alterado com sucesso!'
+                              status= 'success'
+                    else:
+                         message='A descrição inserido ja existe!!'
+                         status= 'error'
+                    return JsonResponse({'status':status , 'message': message })
+                    
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -102,7 +120,7 @@ def list_create_objetivo_estrategico(request):
 def list_rastreabilidade(request):
 
      query = '''
-              select ras.id as id, ras.descricao as descricao, me.descricao as meta
+              select ras.id as id, ras.descricao as descricao, me.descricao as meta, me.id as id_meta
               from master_rastreabilidade as ras
               left join master_meta as me on ras.id_tabela_meta=me.id
              '''
@@ -130,13 +148,23 @@ def create_rastreabilidade(request):
                     id_tabela_meta = request.POST.get("id_tabela_meta")
                     status = "1"
 
-                    rastreabilidade.objects.create(
-                         descricao=descricao,
-                         status=status,
-                         id_tabela_meta=id_tabela_meta
-                    )
-                    return JsonResponse({'status': 'success', 'message': 'Registo feito com sucesso!'})
+                    validate = rastreabilidade.objects.filter(descricao=descricao).count()
 
+                    if validate==0:
+                              rastreabilidade.objects.create(
+                                   descricao=descricao,
+                                   status=status,
+                                   id_tabela_meta=id_tabela_meta
+                              )
+                              message='Registo criado com sucesso!'
+                              status= 'success'
+                    else:
+                          message='A descrição inserido ja existe!!'
+                          status= 'error'
+
+                    return JsonResponse({'status':status, 'message': message })
+
+                   
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
@@ -147,9 +175,11 @@ def editar_rastreabilidade(request):
       try:
                     descricao = request.POST.get("descricao")
                     id_ras= request.POST.get("id")
+                    id_tabela_meta= request.POST.get("id_tabela_meta")
 
                     RA=get_object_or_404(rastreabilidade, id=id_ras)
                     RA.descricao = descricao
+                    RA.id_tabela_meta = id_tabela_meta
                     RA.save()
                     return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
 
@@ -190,7 +220,7 @@ def delete_checkbox_rastreabilidade(request):
 
 def list_meta(request):
      query = '''
-               select ME.id as id, ME.descricao as descricao, KPI.descricao as kpi
+               select ME.id as id, ME.descricao as descricao, KPI.descricao as kpi, KPI.id as id_kpi
                from master_meta as ME
                left join master_kpi as KPI on ME.id_kpi=KPI.id
                '''
@@ -219,12 +249,20 @@ def create_meta(request):
                     status = "1"
                     id_kpi=request.POST.get("id_kpi")
 
-                    meta.objects.create(
-                         descricao=descricao,
-                         status=status,
-                         id_kpi=id_kpi
-                    )
-                    return JsonResponse({'status': 'success', 'message': 'Registo feito com sucesso!'})
+                    validate = meta.objects.filter(descricao=descricao).count()
+
+                    if validate==0:
+                              meta.objects.create(
+                                   descricao=descricao,
+                                   status=status,
+                                   id_kpi=id_kpi
+                              )
+                              message='Registo criado com sucesso!'
+                              status= 'success'
+                    else:
+                         message='A descrição inserido ja existe!!'
+                         status= 'error'
+                    return JsonResponse({'status':status, 'message': message })
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -283,7 +321,8 @@ def list_kpi(request):
      query = '''
                  select kpi.id as id,
                  kpi.descricao as descricao,
-                 oe.descricao as objetivo
+                 oe.descricao as objetivo,
+                 oe.id as objetivo_estrategico
                  from master_kpi as kpi
                  left join master_objetivo_estrategico as oe on kpi.id_objeto_estrategico=oe.id
 
@@ -313,12 +352,21 @@ def create_kpi(request):
                     id_objeto_estrategico = request.POST.get("id_objeto_estrategico")
                     status = "1"
 
-                    kpi.objects.create(
-                         descricao=descricao,
-                         status=status,
-                         id_objeto_estrategico=id_objeto_estrategico
-                    )
-                    return JsonResponse({'status': 'success', 'message': 'Registo feito com sucesso!'})
+                    validate = kpi.objects.filter(descricao=descricao).count()
+
+                    if validate==0:
+                              kpi.objects.create(
+                                   descricao=descricao,
+                                   status=status,
+                                   id_objeto_estrategico=id_objeto_estrategico
+                              )
+                              message='Registo criado com sucesso!'
+                              status= 'success'
+                    else:
+                         message='A descrição inserido ja existe!!'
+                         status= 'error'
+
+                    return JsonResponse({'status': status, 'message': message})
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -329,12 +377,19 @@ def editar_kpi(request):
      if request.method == "POST":
       try:
                     descricao = request.POST.get("descricao")
+                    id_oe = request.POST.get("id_objeto_estrategico")
                     id_kpi= request.POST.get("id")
 
+                    
                     KPI=get_object_or_404(kpi, id=id_kpi)
                     KPI.descricao = descricao
+                    KPI.id_objeto_estrategico=id_oe
                     KPI.save()
-                    return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+
+                    message='Registo alterado com sucesso!'
+                    status= 'success'
+
+                    return JsonResponse({'status': status, 'message': message})
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -374,7 +429,7 @@ def list_OA(request):
      query = '''
                  select oa.id as id,
                  oa.descricao as descricao,
-                 kpi.descricao as kpi
+                 kpi.descricao as kpi, kpi.id as id_kpi
                  from master_objetivo_anual as oa
                  left join master_kpi as kpi on oa.id_kpi=kpi.id
 
@@ -404,13 +459,21 @@ def create_OA(request):
                     id_kpi = request.POST.get("id_kpi")
                     status = "1"
 
-                    objetivo_anual.objects.create(
-                         descricao=descricao,
-                         status=status,
-                         id_kpi=id_kpi
-                    )
-                    return JsonResponse({'status': 'success', 'message': 'Registo feito com sucesso!'})
+                    validate = objetivo_anual.objects.filter(descricao=descricao).count()
 
+                    if validate==0:
+                         objetivo_anual.objects.create(
+                                   descricao=descricao,
+                                   status=status,
+                                   id_kpi=id_kpi
+                                  )
+                         message='Registo criado com sucesso!'
+                         status= 'success'
+                    else:
+                         message='A descrição inserido ja existe!!'
+                         status= 'error'
+                    return JsonResponse({'status':status, 'message': message })
+            
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
@@ -469,7 +532,8 @@ def list_AAN(request):
                  aan.descricao as descricao,
                  oa.descricao as objetivo_anual,
                  aan.data_inicio as data_inicio,
-                 aan.data_fim as data_fim
+                 aan.data_fim as data_fim,
+                 aan.id_objetivo_anual as id_objetivo_anual
                  from master_atividade_anual as aan
                  left join master_objetivo_anual as oa on aan.id_objetivo_anual=oa.id
 
@@ -500,14 +564,23 @@ def create_AAN(request):
                     data_fim = request.POST.get("data_fim")
                     status = "1"
 
-                    atividade_anual.objects.create(
-                         descricao=descricao,
-                         status=status,
-                         id_objetivo_anual=id_objetivo_anual,
-                         data_inicio=data_inicio,
-                         data_fim=data_fim,
-                    )
-                    return JsonResponse({'status': 'success', 'message': 'Registo feito com sucesso!'})
+
+                    validate = atividade_anual.objects.filter(descricao=descricao).count()
+
+                    if validate==0:
+                               atividade_anual.objects.create(
+                                   descricao=descricao,
+                                   status=status,
+                                   id_objetivo_anual=id_objetivo_anual,
+                                   data_inicio=data_inicio,
+                                   data_fim=data_fim,
+                              )
+                               message='Registo criado com sucesso!'
+                               status= 'success'
+                    else:
+                         message='A descrição inserido ja existe!!'
+                         status= 'error'
+                    return JsonResponse({'status':status, 'message': message })
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -573,12 +646,22 @@ def list_AC(request):
                  ac.descricao as descricao,
                  aa.descricao as atividade_anual,
                  ac.obs as obs,
+                 ac.id_departamento_responsavel as id_departamento_responsavel,
+                 ac.responsavel_nome as responsavel_nome,
+                 ac.id_departamento_auxiliar as id_departamento_auxiliar,
+                 ac.responsavel_auxiliar_nome as responsavel_auxiliar_nome,
                  p.descricao as processo,
                  ac.data_inicio as data_inicio,
-                 ac.data_fim as data_fim
+                 ac.data_fim as data_fim,
+                 ac.id_processo as id_processo,
+                 ac.id_atividade_anual as id_atividade_anual,
+                 dp.descricao as departamento_responsavel,
+                 dp_aux.descricao as departamento_auxiliar
                  from master_acao as ac
                  left join master_atividade_anual as aa on ac.id_atividade_anual=aa.id
                  left join master_processo as p on ac.id_processo=p.id
+                 left join master_departamento as dp on ac.id_departamento_responsavel=dp.id
+                 left join master_departamento as dp_aux on ac.id_departamento_auxiliar=dp_aux.id
 
              '''
      with connection.cursor() as cursor:
@@ -590,13 +673,14 @@ def list_AC(request):
           ac_list = resultados
           aan_list = list(atividade_anual.objects.all())
           p_list = list(processo.objects.all())
+          dp_list = list(departamento.objects.all())
 
           paginator = Paginator(ac_list, 7)
           print(paginator)
           page_number = request.GET.get("page")  
           oa = paginator.get_page(page_number)
           
-          return render(request, "master/AC/index.html", {"acao":ac_list,"atividade_anual":aan_list,"processo":p_list}) 
+          return render(request, "master/AC/index.html", {"acao":ac_list,"atividade_anual":aan_list,"processo":p_list,"departamento":dp_list}) 
 
 @csrf_exempt
 def create_AC(request):
@@ -606,22 +690,39 @@ def create_AC(request):
                     descricao = request.POST.get("descricao")
                     id_atividade_anual = request.POST.get("id_atividade_anual")
                     obs = request.POST.get("obs")
+                    departamento = request.POST.get("departamento")
+                    nome_responsavel = request.POST.get("nome_responsavel")
+                    departamento_auxiliar = request.POST.get("departamento_auxiliar")
+                    nome_responsavel_auxiliar = request.POST.get("nome_responsavel_auxiliar")
                     id_processo = request.POST.get("id_processo")
                     data_inicio = request.POST.get("data_inicio")
                     data_fim = request.POST.get("data_fim")
                     status = "1"
 
-                    acao.objects.create(
-                         descricao=descricao,
-                         status=status,
-                         id_atividade_anual=id_atividade_anual,
-                         id_processo=id_processo,
-                         data_inicio=data_inicio,
-                         obs=obs,
-                         data_fim=data_fim,
-                    )
-                    return JsonResponse({'status': 'success', 'message': 'Registo feito com sucesso!'})
+                    validate = acao.objects.filter(descricao=descricao).count()
 
+                    if validate==0:
+                              acao.objects.create(
+                                        descricao=descricao,
+                                        status=status,
+                                        id_atividade_anual=id_atividade_anual,
+                                        id_processo=id_processo,
+                                        id_departamento_responsavel=departamento,
+                                        responsavel_nome=nome_responsavel,
+                                        id_departamento_auxiliar=departamento_auxiliar,
+                                        responsavel_auxiliar_nome=nome_responsavel_auxiliar,
+                                        data_inicio=data_inicio,
+                                        obs=obs,
+                                        data_fim=data_fim,
+                                   )
+                              message='Registo criado com sucesso!'
+                              status= 'success'
+                    else:
+                         message='A descrição inserido ja existe!!'
+                         status= 'error'
+                    return JsonResponse({'status':status, 'message': message })
+
+                    
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
@@ -638,11 +739,19 @@ def editar_AC(request):
                     data_inicio = request.POST.get("data_inicio")
                     data_fim = request.POST.get("data_fim")
                     id_ac = request.POST.get("id")
+                    departamento = request.POST.get("departamento")
+                    nome_responsavel = request.POST.get("nome_responsavel")
+                    departamento_auxiliar = request.POST.get("departamento_auxiliar")
+                    nome_responsavel_auxiliar = request.POST.get("nome_responsavel_auxiliar")
 
                     AC=get_object_or_404(acao, id=id_ac)
                     AC.descricao = descricao
                     AC.id_atividade_anual = id_atividade_anual
                     AC.obs = obs
+                    AC.id_departamento_responsavel=departamento
+                    AC.responsavel_nome=nome_responsavel
+                    AC.id_departamento_auxiliar=departamento_auxiliar
+                    AC.responsavel_auxiliar_nome=nome_responsavel_auxiliar
                     AC.id_processo = id_processo
                     AC.data_inicio = data_inicio
                     AC.data_fim = data_fim

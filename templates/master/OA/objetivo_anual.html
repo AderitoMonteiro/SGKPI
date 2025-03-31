@@ -42,13 +42,13 @@
 						<td>{{oa_list.descricao}}</td>
 						<td>{{oa_list.kpi}}</td>
 						<td>
-							<a href="#editEmployeeModal"   data-id="{{ oa_list.id }}" data-descricao="{{ oa_list.descricao }}" class="edit" onclick="editar_OE(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#editEmployeeModal"  data-id_kpi="{{ oa_list.id_kpi }}"  data-id="{{ oa_list.id }}" data-descricao="{{ oa_list.descricao }}" class="edit" onclick="editar_oe(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a href="#deleteEmployeeModal" data-id="{{ oa_list.id }}" class="delete" data-toggle="modal" onclick="delete_OE(this)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
 					{% empty %}
 					 <tr>
-						<td colspan="4">Nenhum kpi encontrado.</td>
+						<td colspan="4">Nenhum Objetivo Estrategico encontrado.</td>
 					 </tr>
 				 {% endfor %}					
 				</tbody>
@@ -75,11 +75,13 @@
 <!-- Edit Modal HTML -->
 <div id="addEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
+		<div class="alert" id="alerta" style="display: none;">
+		</div>
 		<div class="modal-content">
 			<form action="#">
 				{% csrf_token %}
 				<div class="modal-header">						
-					<h4 class="modal-title">Novo KPI</h4>
+					<h4 class="modal-title">Novo Objetivo Anual</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
@@ -103,7 +105,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" class="btn btn-success" onclick="registrar_OA()" value="Guardar">
+					<input  class="btn btn-success" onclick="registrar_OA()" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -112,6 +114,8 @@
 <!-- Edit Modal HTML -->
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
+		<div class="alert" id="alerta-edit" style="display: none;">
+		</div>
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
@@ -144,7 +148,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" class="btn btn-info" onclick="editar_OA_model()" value="Guardar">
+					<input class="btn btn-info" onclick="editar_OA_model()" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -153,6 +157,8 @@
 <!-- Delete Modal HTML -->
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
+		<div class="alert" id="alerta-delete" style="display: none;">
+		</div>
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
@@ -165,7 +171,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete" onclick="delete_OA_model()">
+					<input  class="btn btn-danger" value="Delete" onclick="delete_OA_model()">
 				</div>
 			</form>
 		</div>
@@ -173,6 +179,8 @@
 </div>
 <div id="deleteEmployee" class="modal fade">
 	<div class="modal-dialog">
+		<div class="alert" id="alerta-check" style="display: none;">
+		</div>
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
@@ -186,7 +194,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" id="id_deleteCk" class="btn btn-danger" value="Delete" >
+					<input  id="id_deleteCk" class="btn btn-danger" value="Delete" >
 				</div>
 			</form>
 		</div>

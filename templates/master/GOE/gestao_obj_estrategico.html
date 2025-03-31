@@ -73,8 +73,12 @@
 </div>
 <!-- Edit Modal HTML -->
 <div id="addEmployeeModal" class="modal fade">
-	<div class="modal-dialog">
+
+	<div class="modal-dialog" >
+		<div class="alert" id="alerta" style="display: none;">
+		</div>
 		<div class="modal-content">
+			
 			<form action="#">
 				{% csrf_token %}
 				<div class="modal-header">						
@@ -89,7 +93,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" class="btn btn-success" onclick="registrar_OE()" value="Guardar">
+					<input class="btn btn-success" onclick="registrar_OE()" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -98,6 +102,8 @@
 <!-- Edit Modal HTML -->
 <div id="editEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
+		<div class="alert" id="alerta-edit" style="display: none;">
+		</div>
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
@@ -115,7 +121,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" class="btn btn-info" onclick="editar_OE_model()" value="Guardar">
+					<input class="btn btn-info" onclick="editar_OE_model()" value="Guardar">
 				</div>
 			</form>
 		</div>
@@ -124,6 +130,8 @@
 <!-- Delete Modal HTML -->
 <div id="deleteEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
+		<div class="alert" id="alerta-delete" style="display: none;">
+		</div>
 		<div class="modal-content">
 			<form action="#">
 				<div class="modal-header">						
@@ -136,7 +144,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input type="submit" class="btn btn-danger" value="Delete" onclick="delete_OE_model()">
+					<input class="btn btn-danger" value="Delete" onclick="delete_OE_model()">
 				</div>
 			</form>
 		</div>
@@ -144,6 +152,8 @@
 </div>
 <div id="deleteEmployee" class="modal fade">
 	<div class="modal-dialog">
+		<div class="alert" id="alerta-check" style="display: none;">
+		</div>
 		<div class="modal-content">
 			<form action="#">
 				<div class="modal-header">						
@@ -157,7 +167,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input type="submit" id="id_deleteCk" class="btn btn-danger" value="Delete" >
+					<input  id="id_deleteCk" class="btn btn-danger" value="Delete" >
 				</div>
 			</form>
 		</div>
