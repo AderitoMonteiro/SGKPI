@@ -9,6 +9,7 @@
 		
 		  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 		  <link rel="stylesheet" href="{% static 'master/style/style.css' %}">
+      <link rel="stylesheet" href="{% static 'master/style/drop_select.css' %}">
      
       <!-- start style modulo gestao obj estrategico -->
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
@@ -20,6 +21,7 @@
         var jqOld = jQuery.noConflict(); // Salva a versão antiga do jQuery
     </script>
         <script src="{% static 'master/style/GOE/jscript.js' %}"></script>
+       
 
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
@@ -80,6 +82,6 @@
               });
           });
     </script>
-    
+     <script src="{% static 'master/js/drop_action.js' %}"></script>
   </body>
 </html>
