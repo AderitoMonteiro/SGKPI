@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import master_view,create_objetivo_estrategico,list_create_objetivo_estrategico,editar_objetivo_estrategico,delete_objetivo_estrategico,delete_checkbox_objetivo_estrategico,list_rastreabilidade,create_rastreabilidade,editar_rastreabilidade,delete_rastreabilidade,delete_checkbox_rastreabilidade,list_meta,create_meta, delete_rastreabilidade,editar_meta,delete_meta,delete_checkbox_meta,list_kpi,create_kpi,editar_kpi,delete_kpi, delete_checkbox_kpi, list_OA,create_OA,editar_OA,delete_OA,delete_checkbox_OA,list_AAN,create_AAN,editar_AAN,delete_AAN,delete_checkbox_AAN,list_AC,create_AC,editar_AC,editar_AC,delete_AC,delect_checkbox_AC
+from .views import master_view,create_objetivo_estrategico,list_create_objetivo_estrategico,editar_objetivo_estrategico,delete_objetivo_estrategico,delete_checkbox_objetivo_estrategico,list_rastreabilidade,create_rastreabilidade,editar_rastreabilidade,delete_rastreabilidade,delete_checkbox_rastreabilidade,list_meta,create_meta, delete_rastreabilidade,editar_meta,delete_meta,delete_checkbox_meta,list_kpi,create_kpi,editar_kpi,delete_kpi, delete_checkbox_kpi, list_OA,create_OA,editar_OA,delete_OA,delete_checkbox_OA,list_AAN,create_AAN,editar_AAN,delete_AAN,delete_checkbox_AAN,list_AC,create_AC,editar_AC,editar_AC,delete_AC,delect_checkbox_AC,list_home
 
 urlpatterns = [
    path('dashboard/', master_view, name='dashboard'),
@@ -39,4 +39,5 @@ urlpatterns = [
    path('editar_AC/', editar_AC, name='editar_AC'),
    path('delete_AC/', delete_AC, name='editar_AC'),
    path('delect_checkbox_AC/', delect_checkbox_AC, name='delect_checkbox_AC'),
+   path('list_home/', list_home, name='list_home'),
 ]

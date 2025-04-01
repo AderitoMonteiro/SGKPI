@@ -32,6 +32,7 @@
 						<th>DEPARTAMENTO AUXILIAR</th>
 						<th>RESPONSAVEL AUXILIAR</th>
 						<th>OBS</th>
+						<th>DATA Registo</th>
 						<th>DATA INICIO</th>
 						<th>DATA FIM</th>
 						<th>ACÕES</th>
@@ -55,10 +56,11 @@
 						<td>{{ac_list.departamento_auxiliar}}</td>
 						<td>{{ac_list.responsavel_auxiliar_nome}}</td>
 						<td>{{ac_list.obs}}</td>
+						<td>{{ac_list.data_registo}}</td>
 						<td>{{ac_list.data_inicio| date:"j \d\e F \d\e Y" }}</td>
 						<td>{{ac_list.data_fim | date:"j \d\e F \d\e Y" }}</td>
 						<td>
-							<a href="#editEmployeeModal" data-responsavel_auxiliar_nome="{{ ac_list.responsavel_auxiliar_nome }}" data-id_departamento_auxiliar="{{ ac_list.id_departamento_auxiliar }}" data-responsavel_nome="{{ ac_list.responsavel_nome }}" data-id_departamento_responsavel="{{ ac_list.id_departamento_responsavel }}" data-obs="{{ ac_list.obs }}" data-data_inicio="{{ ac_list.data_inicio |date:"Y-m-d" }}" data-data_fim="{{ ac_list.data_fim | date:"Y-m-d" }}"  data-id_processo="{{ ac_list.id_processo }}" data-id_atividade_anual="{{ ac_list.id_atividade_anual }}" data-id="{{ ac_list.id }}" data-descricao="{{ ac_list.descricao }}" class="edit" onclick="editar_ac(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#editEmployeeModal"  data-data_registo="{{ ac_list.data_registo }}" data-responsavel_auxiliar_nome="{{ ac_list.responsavel_auxiliar_nome }}" data-id_departamento_auxiliar="{{ ac_list.id_departamento_auxiliar }}" data-responsavel_nome="{{ ac_list.responsavel_nome }}" data-id_departamento_responsavel="{{ ac_list.id_departamento_responsavel }}" data-obs="{{ ac_list.obs }}" data-data_inicio="{{ ac_list.data_inicio |date:"Y-m-d" }}" data-data_fim="{{ ac_list.data_fim | date:"Y-m-d" }}"  data-id_processo="{{ ac_list.id_processo }}" data-id_atividade_anual="{{ ac_list.id_atividade_anual }}" data-id="{{ ac_list.id }}" data-descricao="{{ ac_list.descricao }}" class="edit" onclick="editar_ac(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 							<a href="#deleteEmployeeModal" data-id="{{ ac_list.id }}" class="delete" data-toggle="modal" onclick="delete_OE(this)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 						</td>
 					</tr>
@@ -174,9 +176,8 @@
 					</div>	
 					<div class="form-group">
 						<label for="opcao">Data registo</label>
-						<select class="form-control" id="ac-au-select" required>
-
-							<option value="">--Por favor, escolha uma opção--</option>
+						<select class="form-control" id="dt-select" required>
+							 <option value="">--Por favor, escolha uma opção--</option>
 							 <option value="31/03">31/03</option>
 							 <option value="30/06">30/06</option>
 							 <option value="30/09">30/09</option>
@@ -282,6 +283,17 @@
 						<div class="form-group">
 							<label>Nome do Auxiliar (Opcional)</label>
 							<input type="text" id="edit_auxiliar" class="form-control" required>
+						</div>	
+						<div class="form-group">
+							<label for="opcao">Data registo</label>
+							<select class="form-control" id="edit-dt-select" required>
+								 <option value="">--Por favor, escolha uma opção--</option>
+								 <option value="31/03">31/03</option>
+								 <option value="30/06">30/06</option>
+								 <option value="30/09">30/09</option>
+								 <option value="31/03">31/12</option>
+	
+							</select>
 						</div>	
 						<label>OBS:</label>
 						<div class="form-group">

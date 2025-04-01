@@ -242,6 +242,8 @@ function editar_ac(button) {
     const data_inicio = document.getElementById('data_inicio_edit');
     const data_fim = document.getElementById('data_fim_edit');
     const w3review_edit = document.getElementById('w3review-edit');
+    const data_registo_edit = document.getElementById('edit-dt-select');
+
 
     let select_dp = document.getElementById("edit-ac-dp-select");
     let edit_responsavel = document.getElementById("edit_responsavel");
@@ -259,6 +261,7 @@ function editar_ac(button) {
     edit_responsavel.value=button.getAttribute("data-responsavel_nome");
     select_dp_aux.value=button.getAttribute("data-id_departamento_auxiliar");
     edit_auxiliar.value=button.getAttribute("data-responsavel_auxiliar_nome");
+    data_registo_edit.value=button.getAttribute("data-data_registo");
 
 }
 function delete_OE(button) {
@@ -1089,14 +1092,19 @@ function registrar_AC() {
     let data_inicio = document.getElementById("data_inicio").value;
     let data_fim = document.getElementById("data_fim").value;
 
+
     let departamento = document.getElementById("ac-dp-select").value;
     let nome_responsavel = document.getElementById("responsavel").value;
 
     let departamento_auxiliar = document.getElementById("ac-au-select").value;
+    let data_registo = document.getElementById("dt-select");
+
     let nome_responsavel_auxiliar = document.getElementById("auxiliar").value;
 
     let textoSelecionado_aan = select_aan.value;
     let textoSelecionado_p = select_p.value;
+    let data_regisro = data_registo.value;
+    console.log("data_regisro "+data_regisro)
 
     // Dados para enviar
     const data = {
@@ -1110,8 +1118,8 @@ function registrar_AC() {
         "data_inicio": data_inicio,
         "data_fim": data_fim,
         "X-CSRFToken": getCSRFToken(),
-        "obs": obs
-    };
+        "obs": obs,
+        "data_registo": data_regisro};
 
     // Configuração da requisição
     $.ajax({
@@ -1155,6 +1163,7 @@ function editar_AC_model() {
     let select_aan = document.getElementById("ac-aa-select_edit");
     const obs = document.getElementById('w3review-edit').value;
     let select_p = document.getElementById("ac-p-select_edit");
+    let edit_data_registo_select = document.getElementById("edit-dt-select");
 
     let data_inicio = document.getElementById("data_inicio_edit").value;
     let data_fim = document.getElementById("data_fim_edit").value;
@@ -1169,6 +1178,7 @@ function editar_AC_model() {
     
     let textoSelecionado_aan = select_aan.value;
     let textoSelecionado_p = select_p.value;
+    let edit_data_registo = edit_data_registo_select.value;
 
     // Dados para enviar
     const data = {
@@ -1183,6 +1193,7 @@ function editar_AC_model() {
         "data_fim": data_fim,
         "id": id,
         "obs": obs,
+        "data_registo": edit_data_registo,
         "X-CSRFToken": getCSRFToken()
     };
 

@@ -656,7 +656,8 @@ def list_AC(request):
                  ac.id_processo as id_processo,
                  ac.id_atividade_anual as id_atividade_anual,
                  dp.descricao as departamento_responsavel,
-                 dp_aux.descricao as departamento_auxiliar
+                 dp_aux.descricao as departamento_auxiliar,
+                 ac.data_registo as data_registo
                  from master_acao as ac
                  left join master_atividade_anual as aa on ac.id_atividade_anual=aa.id
                  left join master_processo as p on ac.id_processo=p.id
@@ -696,6 +697,8 @@ def create_AC(request):
                     nome_responsavel_auxiliar = request.POST.get("nome_responsavel_auxiliar")
                     id_processo = request.POST.get("id_processo")
                     data_inicio = request.POST.get("data_inicio")
+                    data_registo = request.POST.get("data_registo")
+
                     data_fim = request.POST.get("data_fim")
                     status = "1"
 
@@ -712,6 +715,7 @@ def create_AC(request):
                                         id_departamento_auxiliar=departamento_auxiliar,
                                         responsavel_auxiliar_nome=nome_responsavel_auxiliar,
                                         data_inicio=data_inicio,
+                                        data_registo=data_registo,
                                         obs=obs,
                                         data_fim=data_fim,
                                    )
@@ -743,6 +747,7 @@ def editar_AC(request):
                     nome_responsavel = request.POST.get("nome_responsavel")
                     departamento_auxiliar = request.POST.get("departamento_auxiliar")
                     nome_responsavel_auxiliar = request.POST.get("nome_responsavel_auxiliar")
+                    edit_data_registo = request.POST.get("data_registo")
 
                     AC=get_object_or_404(acao, id=id_ac)
                     AC.descricao = descricao
@@ -755,6 +760,7 @@ def editar_AC(request):
                     AC.id_processo = id_processo
                     AC.data_inicio = data_inicio
                     AC.data_fim = data_fim
+                    AC.data_registo = edit_data_registo
                     AC.save()
 
                     return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
@@ -790,3 +796,42 @@ def delect_checkbox_AC(request):
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def list_home(request):
+
+     query = '''
+                 select ac.id as id,
+                 p.descricao as processo,
+                 aa.data_inicio as data_inicio_as,
+                 aa.data_fim as data_fim_as,
+                 ac.data_inicio as data_inicio_ac,
+                 ac.data_fim as data_fim_ac,
+                 ac.id_processo as id_processo,
+                 ac.id_processo as id_processo,
+                 ar.descricao as departamento_responsavel,
+                 oa.descricao as objetivo_anual
+                 from master_acao as ac
+                 left join master_atividade_anual as aa on ac.id_atividade_anual=aa.id
+                 left join master_processo as p on ac.id_processo=p.id
+                 left join master_departamento as dp on ac.id_departamento_responsavel=dp.id
+                 left join master_departamento as dp_aux on ac.id_departamento_auxiliar=dp_aux.id
+                 left join master_objetivo_anual as oa on aa.id_objetivo_anual=oa.id
+                 left join master_departamento as ar on ac.id_departamento_responsavel=ar.id
+
+
+             '''
+     with connection.cursor() as cursor:
+          cursor.execute(query)
+
+          colunas = [col[0] for col in cursor.description] 
+          resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
+
+          
+
+          paginator = Paginator(resultados, 7)
+          print(paginator)
+          page_number = request.GET.get("page")  
+          oa = paginator.get_page(page_number)
+          
+          return render(request, "master/HOME/index.html", {"acao":oa}) 

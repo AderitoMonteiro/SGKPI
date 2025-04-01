@@ -80,6 +80,7 @@ class acao(models.Model):
     responsavel_nome = models.CharField(max_length=100,default=True)
     id_departamento_auxiliar = models.IntegerField(default=True)
     responsavel_auxiliar_nome = models.CharField(max_length=100,default=True)
+    data_registo = models.CharField(max_length=10,default=True)
     obs = models.CharField(max_length=500)
     id_processo = models.IntegerField(default=True)
     datecreate = models.DateTimeField(auto_now_add=True)
