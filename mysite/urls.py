@@ -50,4 +50,5 @@ urlpatterns = [
     path('master/list/list_AC/editar/', include('master.urls'),name="editar_AC"),
     path('master/list/list_AC/delete/', include('master.urls'),name="delete_AC"),
     path('master/list/list_AC/delect_checkbox/', include('master.urls'),name="delect_checkbox"),
+    path('departamento/', include('departamentos.urls'),name="departamento"),
   ]

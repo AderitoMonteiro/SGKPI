@@ -1,0 +1,190 @@
+
+<div class="container-xl">
+	<div class="table-responsive">
+		<div class="table-wrapper">
+			<div class="table-title">
+				<div class="row">
+					<div class="col-sm-6">
+						<h2><b>HOME</b></h2>
+					</div>
+					
+				</div>
+			</div>
+			<table class="table table-striped table-hover">
+				<thead>
+					<tr>
+						<th>
+							<span class="custom-checkbox">
+								<input type="checkbox" id="selectAll">
+								<label for="selectAll"></label>
+							</span>
+						</th>
+						<th>ID</th>
+						<th>ATIVIDADE ANUAL PRAZO INICIO</th>
+						<th>ATIVIDADE ANUAL PRAZO FIM</th>
+						<th>AÇÃO PRAZO INICIO</th>
+						<th>AÇÃO PRAZO FIM</th>
+						<th>PROCESSO</th>
+						<th>AREA</th>
+						<th>OBJETIVO ANUAL</th>
+						<th>AÇÃO</th>
+					</tr>
+				</thead>
+				<tbody>
+				{% for ac_list in acao %}
+					<tr>
+						<td>
+							<span class="custom-checkbox">
+								<input type="checkbox" id="checkbox{{ ac_list.id }}" class="user-checkbox" name="options[]" value="{{ ac_list.id }}">
+								<label for="checkbox{{ ac_list.id }}"></label>
+							</span>
+						</td>
+						<td>{{ac_list.id}}</td>
+						<td>{{ac_list.data_inicio_as}}</td>
+						<td>{{ac_list.data_fim_as}}</td>
+						<td>{{ac_list.data_inicio_ac}}</td>
+						<td>{{ac_list.data_fim_ac}}</td>
+						<td>{{ac_list.processo}}</td>
+						<td>{{ac_list.departamento_responsavel}}</td>
+						<td>{{ac_list.objetivo_anual}}</td>
+						<td>
+							<a href="#editEmployeeModal"  data-data_registo="{{ ac_list.data_registo }}" data-responsavel_auxiliar_nome="{{ ac_list.responsavel_auxiliar_nome }}" data-id_departamento_auxiliar="{{ ac_list.id_departamento_auxiliar }}" data-responsavel_nome="{{ ac_list.responsavel_nome }}" data-id_departamento_responsavel="{{ ac_list.id_departamento_responsavel }}" data-obs="{{ ac_list.obs }}" data-data_inicio="{{ ac_list.data_inicio |date:"Y-m-d" }}" data-data_fim="{{ ac_list.data_fim | date:"Y-m-d" }}"  data-id_processo="{{ ac_list.id_processo }}" data-id_atividade_anual="{{ ac_list.id_atividade_anual }}" data-id="{{ ac_list.id }}" data-descricao="{{ ac_list.descricao }}" class="edit" onclick="editar_ac(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+						</td>
+					</tr>
+					{% empty %}
+					 <tr>
+						<td colspan="4">Nenhum ação  encontrado.</td>
+					 </tr>
+				 {% endfor %}					
+				</tbody>
+			</table>
+			<div class="clearfix">
+				<div class="hint-text"> <span>Página {{ objetivo_estrategico.number }} de {{ objetivo_estrategico.paginator.num_pages }}</span></div>
+				<ul class="pagination">
+
+					{% if objetivo_estrategico.has_previous %}
+					<li class="page-item"><a href="?page=1" class="page-link">Primeira</a></li>
+					<li class="page-item"><a href="?page={{ objetivo_estrategico.previous_page_number }}" class="page-link">Anterior</a></li>
+					{% endif %}
+
+					{% if objetivo_estrategico.has_next %}
+						<li class="page-item"><a href="?page={{ objetivo_estrategico.next_page_number }}" class="page-link">Próxima</a></li>
+					{% endif %}
+					
+					
+				</ul>
+			</div>
+		</div>
+	</div>        
+</div>
+<div id="editEmployeeModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="alert" id="alerta-edit" style="display: none;">
+		</div>
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Editar Ação</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<div class="modal-body">					
+						<div class="form-group">
+							<label>Descrição</label>
+							<input id="id_editar" class="form-control" type="hidden">
+							<input type="text" id="descricao_editar" class="form-control" required>
+						</div>
+
+						<div class="form-group">
+							<label>Data Inicio:</label>
+							<input type="date" id="data_inicio_edit" readonly>	
+							<br><label style="margin-right: 8px;">Data Fim :</label>
+							<input type="date" id="data_fim_edit" required>		
+						</div>	
+										
+						<div class="form-group">
+							<label for="opcao">Atividade Anual</label>
+							<select class="form-control" id="ac-aa-select_edit" required>
+	
+								<option value="">--Por favor, escolha uma opção--</option>
+	
+								{% for p_list in atividade_anual %}
+	
+								 <option value="{{p_list.id}}">{{p_list.descricao}}</option>
+	
+								{% endfor %}
+							</select>
+						</div>	
+						<div class="form-group">
+							<label for="opcao">Processo</label>
+							<select class="form-control" id="ac-p-select_edit" required>
+	
+								<option value="">--Por favor, escolha uma opção--</option>
+	
+								{% for p_list in processo %}
+	
+								 <option value="{{p_list.id}}">{{p_list.descricao}}</option>
+	
+								{% endfor %}
+							</select>
+						</div>	
+						<div class="form-group">
+							<label for="opcao">Departamento Responsavel</label>
+							<select class="form-control" id="edit-ac-dp-select" required>
+	
+								<option value="">--Por favor, escolha uma opção--</option>
+	
+								{% for dp_list in departamento %}
+	
+								 <option value="{{dp_list.id}}">{{dp_list.descricao}}</option>
+	
+								{% endfor %}
+							</select>
+						</div>	
+						<div class="form-group">
+							<label>Nome do responsavel</label>
+							<input type="text" id="edit_responsavel" class="form-control" required>
+						</div>	
+						<div class="form-group">
+							<label for="opcao">Departamento Auxiliar (Opcional)</label>
+							<select class="form-control" id="edit-ac-au-select" required>
+	
+								<option value="">--Por favor, escolha uma opção--</option>
+	
+								{% for dp_list in departamento %}
+	
+								 <option value="{{dp_list.id}}">{{dp_list.descricao}}</option>
+	
+								{% endfor %}
+							</select>
+						</div>	
+						<div class="form-group">
+							<label>Nome do Auxiliar (Opcional)</label>
+							<input type="text" id="edit_auxiliar" class="form-control" required>
+						</div>	
+						<div class="form-group">
+							<label for="opcao">Data registo</label>
+							<select class="form-control" id="edit-dt-select" required>
+								 <option value="">--Por favor, escolha uma opção--</option>
+								 <option value="31/03">31/03</option>
+								 <option value="30/06">30/06</option>
+								 <option value="30/09">30/09</option>
+								 <option value="31/03">31/12</option>
+	
+							</select>
+						</div>	
+						<label>OBS:</label>
+						<div class="form-group">
+							<textarea id="w3review-edit" name="w3review-edit" rows="4" cols="58"></textarea>
+						</div>	
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+					<input  class="btn btn-info" onclick="editar_AC_model()" value="Guardar">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
