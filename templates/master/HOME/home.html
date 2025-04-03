@@ -13,43 +13,39 @@
 			<table class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="selectAll">
-								<label for="selectAll"></label>
-							</span>
-						</th>
 						<th>ID</th>
-						<th>ATIVIDADE ANUAL PRAZO INICIO</th>
-						<th>ATIVIDADE ANUAL PRAZO FIM</th>
-						<th>AÇÃO PRAZO INICIO</th>
-						<th>AÇÃO PRAZO FIM</th>
+						<th>OBJETIVO ANUAL</th>
+						<th>ATIVIDADE ANUAL</th>
+						<th>PRAZO INICIO(AA)</th>
+						<th>PRAZO FIM(AA)</th>
+						<th>Ação</th>
+						<th>PRAZO INICIO(AC)</th>
+						<th>PRAZO FIM(AC)</th>
 						<th>PROCESSO</th>
 						<th>AREA</th>
-						<th>OBJETIVO ANUAL</th>
+						<th>DATA REGISTO</th>
 						<th>AÇÃO</th>
 					</tr>
 				</thead>
 				<tbody>
 				{% for ac_list in acao %}
-					<tr>
-						<td>
-							<span class="custom-checkbox">
-								<input type="checkbox" id="checkbox{{ ac_list.id }}" class="user-checkbox" name="options[]" value="{{ ac_list.id }}">
-								<label for="checkbox{{ ac_list.id }}"></label>
-							</span>
-						</td>
-						<td>{{ac_list.id}}</td>
-						<td>{{ac_list.data_inicio_as}}</td>
-						<td>{{ac_list.data_fim_as}}</td>
-						<td>{{ac_list.data_inicio_ac}}</td>
-						<td>{{ac_list.data_fim_ac}}</td>
-						<td>{{ac_list.processo}}</td>
-						<td>{{ac_list.departamento_responsavel}}</td>
-						<td>{{ac_list.objetivo_anual}}</td>
-						<td>
-							<a href="#deleteEmployeeModal" data-id="{{ ac_list.id }}" class="delete" data-toggle="modal" onclick="delete_OE(this)"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xe897;</i></a>
-						</td>
+				<tr>
+						
+					<td>{{ac_list.id}}</td>
+					<td>{{ac_list.objetivo_anual}}</td>
+					<td>{{ac_list.atividade_anual}}</td>
+					<td>{{ac_list.data_inicio_as}}</td>
+					<td>{{ac_list.data_fim_as}}</td>
+					<td>{{ac_list.acao}}</td>
+					<td>{{ac_list.data_inicio_ac}}</td>
+					<td>{{ac_list.data_fim_ac}}</td>
+					<td>{{ac_list.processo}}</td>
+					<td>{{ac_list.departamento_responsavel}}</td>
+					<td>{{ac_list.data_registo}}</td>
+
+					<td>
+						<a href="#editEmployeeModal"   data-id="{{ ac_list.id }}"  data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco_mater(this)" data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" title="Ver"></i></a>
+					</td>
 					</tr>
 					{% empty %}
 					 <tr>
@@ -76,4 +72,45 @@
 			</div>
 		</div>
 	</div>        
+</div>
+<div id="editEmployeeModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="alert" id="alerta-edit" style="display: none;">
+		</div>
+		<div class="modal-content">
+			<form>
+				<div id="modal-header" class="modal-header">						
+				</div>
+				<input type="hidden" id="id_acao" class="form-control">
+				<div class="modal-body">	
+					<div class="modal-body">
+					<label><strong>Balanço:</strong></label>				
+					   <div id="editor"></div>
+                    </div>
+					<div class="modal-body">											
+					 <label><strong>Constrangimento:</strong></label>
+    					   <div id="editor-c"></div>
+                    </div>
+					<div class="modal-body">											
+						<label><strong>Atividade não  previsto:</strong></label>
+						<div id="editor-ap"></div>
+					</div>
+					<div class="modal-body">
+						<label for="opcao"><strong>Progresso:</strong></strong></label>
+						<select class="form-control" id="pg-select" required>
+							 <option value="">--Por favor, escolha uma opção--</option>
+							 <option value="25%">0-39%</option>
+							 <option value="50%">40-49%</option>
+							 <option value="75%">60-69%</option>
+							 <option value="100%">70-100%</option>
+
+						</select>
+					</div>	
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
+				</div>
+			  </div>
+			</form>
+		</div>
 </div>

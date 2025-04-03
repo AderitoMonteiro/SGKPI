@@ -1089,6 +1089,7 @@ function registrar_AC() {
     const obs = document.getElementById('w3review').value;
     let select_aan = document.getElementById("ac-aa-select");
     let select_p = document.getElementById("ac-p-select");
+    let select_pg = document.getElementById("pg-select");
     let data_inicio = document.getElementById("data_inicio").value;
     let data_fim = document.getElementById("data_fim").value;
 
@@ -1104,7 +1105,7 @@ function registrar_AC() {
     let textoSelecionado_aan = select_aan.value;
     let textoSelecionado_p = select_p.value;
     let data_regisro = data_registo.value;
-    console.log("data_regisro "+data_regisro)
+    let progresso = select_pg.value;
 
     // Dados para enviar
     const data = {
@@ -1119,7 +1120,8 @@ function registrar_AC() {
         "data_fim": data_fim,
         "X-CSRFToken": getCSRFToken(),
         "obs": obs,
-        "data_registo": data_regisro};
+        "data_registo": data_regisro,
+        "progresso":progresso};
 
     // Configuração da requisição
     $.ajax({
@@ -1278,5 +1280,170 @@ function delete_AC_model() {
             alert('Erro: ' + xhr.responseJSON.message);
         }
     });
+
+}
+
+function balanco_model() {
+
+    const balanco = quill1.root.innerHTML;
+    const contrangimento = quill2.root.innerHTML;
+    const atividade_previsto = quill3.root.innerHTML;
+    const id_acao =  document.getElementById("id_acao").value;
+    let progresso = document.getElementById("pg-select").value;
+
+
+    const data = {
+        "balanco": balanco,
+        "constrangimento": contrangimento,
+        "atividade_previsto": atividade_previsto,
+        "atividade_previsto": atividade_previsto,
+        "progresso": progresso,
+        "id_acao":id_acao
+        };
+
+    
+        $.ajax({
+            url: 'add/balanco_AC/',
+            type: 'POST',
+            data: data,
+            success: function (data) {
+                
+                
+                let divPai = document.getElementById("alerta-edit");
+                divPai.innerHTML=''
+                let novaDiv = document.createElement("strong");
+    
+               if(data.status=='success')
+               {
+                    divPai.innerHTML=''
+                    novaDiv.innerHTML = data.message;
+                    divPai.setAttribute("style","display: block!important; background-color: #04AA6D!important;");
+                    divPai.appendChild(novaDiv);
+    
+                    slowReload();
+    
+               }else{
+    
+                    divPai.innerHTML=''
+                    novaDiv.innerHTML = data.message;
+                    divPai.setAttribute("style","display: block!important; background-color: #f44336!important;")
+                    divPai.appendChild(novaDiv);
+    
+               }
+            },
+            error: function (xhr, status, error) {
+                alert('Erro: ' + xhr.responseJSON.message);
+            }
+        });
+    
+}
+
+function editar_balanco(button) {
+
+     const id_acao = document.getElementById('id_acao');
+     let modal_header = document.getElementById("modal-header");
+     modal_header.innerHTML='';
+
+     let editar_balanco=button.getAttribute("data-departamento_responsavel");
+
+     let novaDiv = document.createElement("h4");
+     let but = document.createElement("button");
+     but.setAttribute("type","button");
+     but.setAttribute("class","close");
+     but.setAttribute("data-dismiss","modal");
+     but.setAttribute("aria-hidden","true");
+     but.innerHTML='&times;'
+
+     novaDiv.setAttribute("class","modal-title");
+     novaDiv.innerHTML='BALANÇO OE('+editar_balanco+')'
+
+     modal_header.appendChild(novaDiv);
+     modal_header.appendChild(but);
+    
+     id_acao.value=button.getAttribute("data-id");
+
+     const data = {
+        "id_acao":id_acao.value
+        };
+
+        $.ajax({
+            url: 'edit/balanco_editar/',
+            type: 'POST',
+            data: data,
+            success: function (data) {
+
+                const datajs = JSON.parse(data);
+                let progresso = document.getElementById("pg-select");
+
+    
+                quill1.root.innerHTML = datajs[0].fields.descricao_balanco
+                quill2.root.innerHTML = datajs[0].fields.constrangimento_descricao
+                quill3.root.innerHTML = datajs[0].fields.atividade_previsto_descricao
+
+                progresso.value=datajs[0].fields.progresso
+
+             },
+            error: function (xhr, status, error) {
+
+                alert('Erro: ' + xhr.responseJSON.message);
+            } 
+        });
+
+}
+
+function editar_balanco_mater(button) {
+
+    const id_acao = document.getElementById('id_acao');
+    let modal_header = document.getElementById("modal-header");
+    modal_header.innerHTML='';
+
+    let editar_balanco=button.getAttribute("data-departamento_responsavel");
+
+    let novaDiv = document.createElement("h4");
+    let but = document.createElement("button");
+    but.setAttribute("type","button");
+    but.setAttribute("class","close");
+    but.setAttribute("data-dismiss","modal");
+    but.setAttribute("aria-hidden","true");
+    but.innerHTML='&times;'
+
+    novaDiv.setAttribute("class","modal-title");
+    novaDiv.innerHTML='BALANÇO OE('+editar_balanco+')'
+
+    modal_header.appendChild(novaDiv);
+    modal_header.appendChild(but);
+   
+    id_acao.value=button.getAttribute("data-id");
+
+    const data = {
+       "id_acao":id_acao.value
+       };
+
+       $.ajax({
+           url: 'edit/balanco_editar/',
+           type: 'POST',
+           data: data,
+           success: function (data) {
+
+               const datajs = JSON.parse(data);
+               let progresso = document.getElementById("pg-select");
+
+   
+               quill1.root.innerHTML = datajs[0].fields.descricao_balanco
+               quill2.root.innerHTML = datajs[0].fields.constrangimento_descricao
+               quill3.root.innerHTML = datajs[0].fields.atividade_previsto_descricao
+
+               quill1.enable(false)
+               quill2.enable(false)
+               quill3.enable(false)
+
+               progresso.value=datajs[0].fields.progresso
+
+            },
+           error: function (xhr, status, error) {
+
+               alert('Erro: ' + xhr.responseJSON.message);
+           } 
+       });
 
 }

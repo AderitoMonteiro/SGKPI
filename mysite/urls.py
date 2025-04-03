@@ -51,4 +51,7 @@ urlpatterns = [
     path('master/list/list_AC/delete/', include('master.urls'),name="delete_AC"),
     path('master/list/list_AC/delect_checkbox/', include('master.urls'),name="delect_checkbox"),
     path('departamento/', include('departamentos.urls'),name="departamento"),
+    path('departamento/list_home/add/', include('departamentos.urls'),name="adicionar_balanco"),
+    path('departamento/list_home/edit/',include('departamentos.urls'),name="editar_balanco"),
+    path('master/list_home/edit/',include('departamentos.urls'),name="editar_balanco"),
   ]
