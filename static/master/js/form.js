@@ -1438,6 +1438,7 @@ function editar_balanco_mater(button) {
                quill3.enable(false)
 
                progresso.value=datajs[0].fields.progresso
+               progresso.disabled = true;
 
             },
            error: function (xhr, status, error) {
@@ -1447,3 +1448,4 @@ function editar_balanco_mater(button) {
        });
 
 }
+
