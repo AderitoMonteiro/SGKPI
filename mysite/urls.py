@@ -55,4 +55,7 @@ urlpatterns = [
     path('departamento/list_home/edit/',include('departamentos.urls'),name="editar_balanco"),
     path('master/list_home/edit/',include('departamentos.urls'),name="editar_balanco"),
     path('dir/',include('dir.urls'),name="list_home"),
+    path('dir/list_home/edit/',include('departamentos.urls'),name="editar_balanco"),
+    path('dir/list_home/block/',include('dir.urls'),name="mudar_balanço"),
   ]
+

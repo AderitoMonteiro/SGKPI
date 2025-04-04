@@ -231,6 +231,13 @@ function editar_aan(button) {
 
 }
 
+function block_aan(button) {
+
+    id_acao = button.getAttribute("data-id");
+    document.getElementById("block_action").value = id_acao;
+
+}
+
 function editar_ac(button) {
 
     document.getElementById("descricao_editar").value = button.getAttribute("data-descricao");
@@ -1448,4 +1455,89 @@ function editar_balanco_mater(button) {
        });
 
 }
+
+function editar_balanco_dir(button) {
+
+    const id_acao = document.getElementById('id_acao');
+    let modal_header = document.getElementById("modal-header");
+    modal_header.innerHTML='';
+
+    let editar_balanco=button.getAttribute("data-departamento_responsavel");
+
+    let novaDiv = document.createElement("h4");
+    let but = document.createElement("button");
+    but.setAttribute("type","button");
+    but.setAttribute("class","close");
+    but.setAttribute("data-dismiss","modal");
+    but.setAttribute("aria-hidden","true");
+    but.innerHTML='&times;'
+
+    novaDiv.setAttribute("class","modal-title");
+    novaDiv.innerHTML='BALANÇO OE('+editar_balanco+')'
+
+    modal_header.appendChild(novaDiv);
+    modal_header.appendChild(but);
+   
+    id_acao.value=button.getAttribute("data-id");
+
+    const data = {
+       "id_acao":id_acao.value
+       };
+
+       $.ajax({
+           url: 'edit/balanco_editar/',
+           type: 'POST',
+           data: data,
+           success: function (data) {
+
+               const datajs = JSON.parse(data);
+               let progresso = document.getElementById("pg-select");
+
+   
+               quill1.root.innerHTML = datajs[0].fields.descricao_balanco
+               quill2.root.innerHTML = datajs[0].fields.constrangimento_descricao
+               quill3.root.innerHTML = datajs[0].fields.atividade_previsto_descricao
+
+               quill1.enable(false)
+               quill2.enable(false)
+               quill3.enable(false)
+
+               progresso.value=datajs[0].fields.progresso
+               progresso.disabled = true;
+
+            },
+           error: function (xhr, status, error) {
+
+               alert('Erro: ' + xhr.responseJSON.message);
+           } 
+       });
+
+}
+
+
+function block_balanco_dir(button) {
+
+    const id_acao = document.getElementById('block_action');
+
+    const data = {
+       "id_acao":id_acao.value
+       };
+
+       $.ajax({
+           url: 'block/mudar_balanco/',
+           type: 'POST',
+           data: data,
+           success: function (data) {
+
+              
+
+            },
+           error: function (xhr, status, error) {
+
+               alert('Erro: ' + xhr.responseJSON.message);
+           } 
+       });
+
+}
+
 

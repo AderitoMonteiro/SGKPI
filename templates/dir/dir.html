@@ -46,9 +46,9 @@
 						<td>{{ac_list.data_registo}}</td>
 
 						<td>
-							<a href="#editEmployeeModal"   data-id="{{ ac_list.id }}"  data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco(this)" data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" title="Ver"></i></a>
-							<a href="#editEmployeeModal"   data-id="{{ ac_list.id }}"  data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco(this)" data-toggle="modal"><i class="fa fa-lock" data-toggle="tooltip" title="Bloquear"></i></a>
-							<a href="#editEmployeeModal"   data-id="{{ ac_list.id }}"  data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Balaço">&#xE254;</i></a>
+							<a href="#seeEmployeeModal"    data-id="{{ ac_list.id }}"  data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco_dir(this)" data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" title="Ver"></i></a>
+							<a href="#blockEmployeeModal"  data-id="{{ ac_list.id }}"  class="edit" onclick="block_aan(this)" data-toggle="modal"><i class="{{ ac_list.class }}" id="block_bt"  title="{{ ac_list.title }}"></i></a>
+							<a href="#editEmployeeModal"   data-id="{{ ac_list.id }}"  data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 						</td>
 					</tr>
 					{% empty %}
@@ -77,7 +77,7 @@
 		</div>
 	</div>        
 </div>
-<div id="editEmployeeModal" class="modal fade">
+<div id="seeEmployeeModal" class="modal fade">
 	<div class="modal-dialog">
 		<div class="alert" id="alerta-edit" style="display: none;">
 		</div>
@@ -107,7 +107,6 @@
 							 <option value="50%">40-49%</option>
 							 <option value="75%">60-69%</option>
 							 <option value="100%">70-100%</option>
-
 						</select>
 					</div>	
 				</div>
@@ -117,5 +116,28 @@
 				</div>
 			  </div>
 			</form>
-		</div>
 </div>
+</div>
+<div id="blockEmployeeModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="alert" id="alerta-delete" style="display: none;">
+		</div>
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Bloquear balanço</h4>
+					<input type="hidden" id="block_action" class="form-control">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<p>Tem a certeza de que pretende bloquear o balanço?</p>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input class="btn btn-danger" value="Bloquear" onclick="block_balanco_dir()">
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+

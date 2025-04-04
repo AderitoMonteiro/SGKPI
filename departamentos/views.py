@@ -98,11 +98,10 @@ def editar_balanco(request):
       try:
                       id_acao = request.POST.get("id_acao")
                       bl = balanco.objects.filter(id_acao=id_acao)
-                                             
-                      message='A balanço editado com sucesso!!'
-                      status= 'success'
+                   
 
                       return JsonResponse(serialize("json", bl),safe=False)
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
