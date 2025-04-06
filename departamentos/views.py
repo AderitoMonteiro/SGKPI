@@ -7,12 +7,15 @@ from django.core.paginator import Paginator
 from django.db import connection
 from .models import balanco
 from master.models import data_registo
+
 from django.core.serializers import serialize
+from django.contrib.auth.decorators import login_required
+
 
 
 
 # Create your views here.
-@csrf_exempt
+@login_required
 def list_home(request):
 
      query = '''
@@ -68,35 +71,40 @@ def adicionar_balanco(request):
                     id_acao = request.POST.get("id_acao")
                     data_rg = request.POST.get("data_registo")
 
-                    dt=get_object_or_404(data_registo,descricao=data_rg)
-                    
-                   
 
-                    validate = balanco.objects.filter(id_acao=id_acao).count()
-                    if validate==0:
-                         balanco.objects.create(
-                                   descricao_balanco=balanco_descricao,
-                                   constrangimento_descricao=descricao_descricao,
-                                   atividade_previsto_descricao=atividade_previsto,
-                                   id_data_registo=dt.id,
-                                   progresso=progresso,
-                                   id_acao=id_acao
-                              )
-                         message='A balanço registado com sucesso!!'
-                         status= 'success'
+                    if balanco_descricao !='' and  descricao_descricao !='' and atividade_previsto !='' and progresso !='':
+                                        dt=get_object_or_404(data_registo,descricao=data_rg)
+                                        
+                                        validate = balanco.objects.filter(id_acao=id_acao).count()
+                                        if validate==0:
+                                             balanco.objects.create(
+                                                       descricao_balanco=balanco_descricao,
+                                                       constrangimento_descricao=descricao_descricao,
+                                                       atividade_previsto_descricao=atividade_previsto,
+                                                       id_data_registo=dt.id,
+                                                       progresso=progresso,
+                                                       id_acao=id_acao
+                                                  )
+                                             message='A balanço registado com sucesso!!'
+                                             status= 'success'
+                                        else:
+                                             bo=get_object_or_404(balanco, id_acao=id_acao)
+                                             bo.descricao_balanco = balanco_descricao
+                                             bo.constrangimento_descricao = descricao_descricao
+                                             bo.atividade_previsto_descricao = atividade_previsto
+                                             bo.progresso = progresso
+                                             bo.id_data_registo = dt.id
+                                             bo.save()
+
+                                             message='A balanço editado com sucesso!!'
+                                             status= 'success'
+
+                                             return JsonResponse({'status':status, 'message': message })
                     else:
-                          bo=get_object_or_404(balanco, id_acao=id_acao)
-                          bo.descricao_balanco = balanco_descricao
-                          bo.constrangimento_descricao = descricao_descricao
-                          bo.atividade_previsto_descricao = atividade_previsto
-                          bo.progresso = progresso
-                          bo.id_data_registo = dt.id
-                          bo.save()
+                              message='Erro, tem que preencher todos os campos obrigatorios!!'
+                              status= 'error'
 
-                          message='A balanço editado com sucesso!!'
-                          status= 'success'
-
-                    return JsonResponse({'status':status, 'message': message })
+                              return JsonResponse({'status':status, 'message': message })
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)

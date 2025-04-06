@@ -1291,13 +1291,23 @@ function delete_AC_model() {
 
 function balanco_model() {
 
-    const balanco = quill1.root.innerHTML;
-    const contrangimento = quill2.root.innerHTML;
-    const atividade_previsto = quill3.root.innerHTML;
+    let balanco = quill1.root.innerHTML;
+    let contrangimento = quill2.root.innerHTML;
+    let atividade_previsto = quill3.root.innerHTML;
     const id_acao =  document.getElementById("id_acao").value;
     let progresso = document.getElementById("pg-select").value;
     let data_registo = document.getElementById("data_registo_desc").value;
-
+  
+    if(quill1.getText().trim()==="")
+    {
+        balanco=""
+    }
+   if(quill2.getText().trim()===""){
+        contrangimento=""
+    }
+    if(quill3.getText().trim()===""){
+        atividade_previsto=""
+    }
 
     const data = {
         "balanco": balanco,
