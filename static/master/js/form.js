@@ -1259,8 +1259,7 @@ function delete_AC_model() {
         type: 'POST',
         data: data,
         success: function (data) {
-           
-            
+   
             let divPai = document.getElementById("alerta-delete");
             divPai.innerHTML=''
             let novaDiv = document.createElement("strong");
@@ -1297,6 +1296,7 @@ function balanco_model() {
     const atividade_previsto = quill3.root.innerHTML;
     const id_acao =  document.getElementById("id_acao").value;
     let progresso = document.getElementById("pg-select").value;
+    let data_registo = document.getElementById("data_registo_desc").value;
 
 
     const data = {
@@ -1305,7 +1305,8 @@ function balanco_model() {
         "atividade_previsto": atividade_previsto,
         "atividade_previsto": atividade_previsto,
         "progresso": progresso,
-        "id_acao":id_acao
+        "id_acao":id_acao,
+        "data_registo":data_registo
         };
 
     
@@ -1348,6 +1349,9 @@ function balanco_model() {
 function editar_balanco(button) {
 
      const id_acao = document.getElementById('id_acao');
+     const data_registo = document.getElementById('data_registo_desc');
+
+
      let modal_header = document.getElementById("modal-header");
      modal_header.innerHTML='';
 
@@ -1368,6 +1372,7 @@ function editar_balanco(button) {
      modal_header.appendChild(but);
     
      id_acao.value=button.getAttribute("data-id");
+     data_registo.value=button.getAttribute("data-data_registo");
 
      const data = {
         "id_acao":id_acao.value
@@ -1381,6 +1386,7 @@ function editar_balanco(button) {
 
                 const datajs = JSON.parse(data);
                 let progresso = document.getElementById("pg-select");
+                let status =datajs[0].fields.status
 
     
                 quill1.root.innerHTML = datajs[0].fields.descricao_balanco
@@ -1388,6 +1394,24 @@ function editar_balanco(button) {
                 quill3.root.innerHTML = datajs[0].fields.atividade_previsto_descricao
 
                 progresso.value=datajs[0].fields.progresso
+
+                if(status=="0"){
+                    quill1.enable(false)
+                    quill2.enable(false)
+                    quill3.enable(false)
+     
+                    progresso.value=datajs[0].fields.progresso
+                    progresso.disabled = true;
+
+                }else{
+
+                    quill1.enable(true)
+                    quill2.enable(true)
+                    quill3.enable(true)
+     
+                    progresso.value=datajs[0].fields.progresso
+                    progresso.disabled = false;
+                }
 
              },
             error: function (xhr, status, error) {
@@ -1518,6 +1542,20 @@ function editar_balanco_dir(button) {
 function block_balanco_dir(button) {
 
     const id_acao = document.getElementById('block_action');
+    const link= document.getElementById('status-value');
+    const status = link.getAttribute("data-status");
+
+    let id_alert;
+
+
+    if(status=="1"){
+
+        id_alert="alerta-block";
+
+    }else{
+
+        id_alert="alerta-unblock";
+    }
 
     const data = {
        "id_acao":id_acao.value
@@ -1529,7 +1567,26 @@ function block_balanco_dir(button) {
            data: data,
            success: function (data) {
 
-              
+            let divPai = document.getElementById(id_alert);
+            divPai.innerHTML=''
+            let novaDiv = document.createElement("strong");
+
+                if(data.status=='success')
+                {
+                        divPai.innerHTML=''
+                        novaDiv.innerHTML = data.message;
+                        divPai.setAttribute("style","display: block!important; background-color: #04AA6D!important;");
+                        divPai.appendChild(novaDiv);
+                        slowReload();
+
+                  }else{
+
+                        divPai.innerHTML=''
+                        novaDiv.innerHTML = data.message;
+                        divPai.setAttribute("style","display: block!important; background-color: #f44336!important;")
+                        divPai.appendChild(novaDiv);
+
+                }
 
             },
            error: function (xhr, status, error) {
@@ -1539,5 +1596,54 @@ function block_balanco_dir(button) {
        });
 
 }
+
+function balanco_geral() {
+
+    const balanco = quill4.root.innerHTML;
+    let data_registo = document.getElementById("bg-select").value;
+
+    console.log(data_registo)
+
+    const data = {
+        "balanco": balanco,
+        "data_registo": data_registo,
+        };
+
+    
+        $.ajax({
+            url: 'add/balanco_geral/',
+            type: 'POST',
+            data: data,
+            success: function (data) {
+                
+            let divPai = document.getElementById("alerta-bl");
+            divPai.innerHTML=''
+            let novaDiv = document.createElement("strong");
+
+                if(data.status=='success')
+                {
+                        divPai.innerHTML=''
+                        novaDiv.innerHTML = data.message;
+                        divPai.setAttribute("style","display: block!important; background-color: #04AA6D!important;");
+                        divPai.appendChild(novaDiv);
+
+                        slowReload();
+
+                }else{
+
+                        divPai.innerHTML=''
+                        novaDiv.innerHTML = data.message;
+                        divPai.setAttribute("style","display: block!important; background-color: #f44336!important;")
+                        divPai.appendChild(novaDiv);
+
+                }
+            },
+            error: function (xhr, status, error) {
+                alert('Erro: ' + xhr.responseJSON.message);
+            }
+        });
+    
+}
+
 
 

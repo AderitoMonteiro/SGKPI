@@ -69,6 +69,13 @@ class departamento(models.Model):
     datecreate = models.DateTimeField(auto_now_add=True)
     dateupdate = models.DateTimeField(auto_now=True)
 
+class data_registo(models.Model):
+    id = models.AutoField(primary_key=True)
+    descricao = models.CharField(max_length=100)
+    status = models.BooleanField(default=True)
+    datecreate = models.DateTimeField(auto_now_add=True)
+    dateupdate = models.DateTimeField(auto_now=True)
+
 class acao(models.Model):
     id = models.AutoField(primary_key=True)
     descricao = models.CharField(max_length=100)

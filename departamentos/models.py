@@ -8,8 +8,10 @@ class balanco(models.Model):
     atividade_previsto_descricao = models.CharField(max_length=1000)
     progresso = models.CharField(max_length=10,default="")
     id_acao = models.IntegerField(default=True)
+    id_data_registo = models.IntegerField(default=True)
     datecreate = models.DateTimeField(auto_now_add=True)
     dateupdate = models.DateTimeField(auto_now=True)
+
 
      
 

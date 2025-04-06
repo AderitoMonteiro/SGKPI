@@ -6,6 +6,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import connection
 from .models import balanco
+from master.models import data_registo
 from django.core.serializers import serialize
 
 
@@ -27,7 +28,8 @@ def list_home(request):
                  ac.id_processo as id_processo,
                  ac.id_processo as id_processo,
                  ar.descricao as departamento_responsavel,
-                 oa.descricao as objetivo_anual
+                 oa.descricao as objetivo_anual,
+                 db.status
                  from master_acao as ac
                  left join master_atividade_anual as aa on ac.id_atividade_anual=aa.id
                  left join master_processo as p on ac.id_processo=p.id
@@ -35,6 +37,7 @@ def list_home(request):
                  left join master_departamento as dp_aux on ac.id_departamento_auxiliar=dp_aux.id
                  left join master_objetivo_anual as oa on aa.id_objetivo_anual=oa.id
                  left join master_departamento as ar on ac.id_departamento_responsavel=ar.id
+                 left join departamentos_balanco as db on ac.id=db.id_acao
 
 
              '''
@@ -63,13 +66,19 @@ def adicionar_balanco(request):
                     atividade_previsto = request.POST.get("atividade_previsto")
                     progresso = request.POST.get("progresso")
                     id_acao = request.POST.get("id_acao")
+                    data_rg = request.POST.get("data_registo")
+
+                    dt=get_object_or_404(data_registo,descricao=data_rg)
                     
+                   
+
                     validate = balanco.objects.filter(id_acao=id_acao).count()
                     if validate==0:
                          balanco.objects.create(
                                    descricao_balanco=balanco_descricao,
                                    constrangimento_descricao=descricao_descricao,
                                    atividade_previsto_descricao=atividade_previsto,
+                                   id_data_registo=dt.id,
                                    progresso=progresso,
                                    id_acao=id_acao
                               )
@@ -81,6 +90,7 @@ def adicionar_balanco(request):
                           bo.constrangimento_descricao = descricao_descricao
                           bo.atividade_previsto_descricao = atividade_previsto
                           bo.progresso = progresso
+                          bo.id_data_registo = dt.id
                           bo.save()
 
                           message='A balanço editado com sucesso!!'

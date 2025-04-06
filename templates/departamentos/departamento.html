@@ -46,7 +46,7 @@
 						<td>{{ac_list.data_registo}}</td>
 
 						<td>
-							<a href="#editEmployeeModal"   data-id="{{ ac_list.id }}"  data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+							<a href="#editEmployeeModal"   data-id="{{ ac_list.id }}" data-data_registo="{{ ac_list.data_registo }}"   data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco(this)" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
 						</td>
 					</tr>
 					{% empty %}
@@ -84,6 +84,7 @@
 				<div id="modal-header" class="modal-header">						
 				</div>
 				<input type="hidden" id="id_acao" class="form-control">
+				<input type="hidden" id="data_registo_desc" class="form-control">
 				<div class="modal-body">	
 					<div class="modal-body">
 					<label><strong>Balanço:</strong></label>				
