@@ -104,18 +104,18 @@
 				</div>
 				<div class="modal-body">					
 					<div class="form-group">
-						<label>Descrição</label>
+						<label><strong>Descrição</strong><span style="color: red;">*</span></label>
 						<input type="text" id="descricao" class="form-control" required>
 					</div>	
 					<div class="form-group">
-						<label>Data Inicio:</label>
+						<label><strong>Data Inicio</strong><span style="color: red;">*</span></label>
 						<input type="date" id="data_inicio" readonly>	
-						<br><label style="margin-right: 8px;">Data Fim :</label>
+						<br><label style="margin-right: 8px;"><strong>Data Fim </strong><span style="color: red;">*</span></label>
 						<input type="date" id="data_fim" required>		
 					</div>	
 									
 					<div class="form-group">
-						<label for="opcao">Atividade Anual</label>
+						<label for="opcao"><strong>Atividade Anual</strong><span style="color: red;">*</span></label>
 						<select class="form-control" id="ac-aa-select" required>
 
 							<option value="">--Por favor, escolha uma opção--</option>
@@ -128,8 +128,8 @@
 						</select>
 					</div>	
 					<div class="form-group">
-						<label for="opcao">Processo</label>
-						<select class="form-control" id="ac-p-select" required>
+						<label for="opcao"><strong>Processo</strong><span style="color: red;">*</span></label>
+						<select class="form-control" id="ac-p-select-add" required>
 
 							<option value="">--Por favor, escolha uma opção--</option>
 
@@ -141,7 +141,7 @@
 						</select>
 					</div>	
 					<div class="form-group">
-						<label for="opcao">Departamento Responsavel</label>
+						<label for="opcao"><strong>Departamento Responsavel</strong><span style="color: red;">*</span></label>
 						<select class="form-control" id="ac-dp-select" required>
 
 							<option value="">--Por favor, escolha uma opção--</option>
@@ -154,11 +154,11 @@
 						</select>
 					</div>	
 					<div class="form-group">
-						<label>Nome do responsavel</label>
+						<label><strong>Nome do responsavel</strong><span style="color: red;">*</span></label>
 						<input type="text" id="responsavel" class="form-control" required>
 					</div>	
 					<div class="form-group">
-						<label for="opcao">Departamento Auxiliar (Opcional)</label>
+						<label for="opcao"><strong>Departamento Auxiliar (Opcional)</strong></label>
 						<select class="form-control" id="ac-au-select" required>
 
 							<option value="">--Por favor, escolha uma opção--</option>
@@ -171,11 +171,11 @@
 						</select>
 					</div>	
 					<div class="form-group">
-						<label>Nome do Auxiliar (Opcional)</label>
+						<label><strong>Nome do Auxiliar (Opcional)</strong></label>
 						<input type="text" id="auxiliar" class="form-control" required>
 					</div>	
 					<div class="form-group">
-						<label for="opcao">Data registo</label>
+						<label for="opcao"><strong>Data registo</strong><span style="color: red;">*</span></label>
 						<select class="form-control" id="dt-select" required>
 							 <option value="">--Por favor, escolha uma opção--</option>
 							 <option value="31/03">31/03</option>
@@ -185,7 +185,7 @@
 
 						</select>
 					</div>	
-					<label>OBS:</label>
+					<label><strong>OBS</strong><span style="color: red;">*</span></label>
 					<div class="form-group">
 						<textarea id="w3review" name="w3review" rows="4" cols="60"></textarea>
 					</div>	
@@ -212,7 +212,7 @@
 				<div class="modal-body">					
 					<div class="modal-body">					
 						<div class="form-group">
-							<label>Descrição</label>
+							<label><strong>Descrição</strong><span style="color: red;">*</span></label>
 							<input id="id_editar" class="form-control" type="hidden">
 							<input type="text" id="descricao_editar" class="form-control" required>
 						</div>
@@ -225,7 +225,7 @@
 						</div>	
 										
 						<div class="form-group">
-							<label for="opcao">Atividade Anual</label>
+							<label for="opcao"><strong>Atividade Anual</strong><span style="color: red;">*</span></label>
 							<select class="form-control" id="ac-aa-select_edit" required>
 	
 								<option value="">--Por favor, escolha uma opção--</option>
@@ -238,7 +238,7 @@
 							</select>
 						</div>	
 						<div class="form-group">
-							<label for="opcao">Processo</label>
+							<label for="opcao"><strong>Processo</strong><span style="color: red;">*</span></label>
 							<select class="form-control" id="ac-p-select_edit" required>
 	
 								<option value="">--Por favor, escolha uma opção--</option>
@@ -251,7 +251,7 @@
 							</select>
 						</div>	
 						<div class="form-group">
-							<label for="opcao">Departamento Responsavel</label>
+							<label for="opcao"><strong>Departamento Responsavel</strong><span style="color: red;">*</span></label>
 							<select class="form-control" id="edit-ac-dp-select" required>
 	
 								<option value="">--Por favor, escolha uma opção--</option>
@@ -264,11 +264,11 @@
 							</select>
 						</div>	
 						<div class="form-group">
-							<label>Nome do responsavel</label>
+							<label><strong>Nome do responsavel</strong><span style="color: red;">*</span></label>
 							<input type="text" id="edit_responsavel" class="form-control" required>
 						</div>	
 						<div class="form-group">
-							<label for="opcao">Departamento Auxiliar (Opcional)</label>
+							<label for="opcao"><strong>Departamento Auxiliar (Opcional)</strong></label>
 							<select class="form-control" id="edit-ac-au-select" required>
 	
 								<option value="">--Por favor, escolha uma opção--</option>
@@ -281,11 +281,11 @@
 							</select>
 						</div>	
 						<div class="form-group">
-							<label>Nome do Auxiliar (Opcional)</label>
+							<label><strong>Nome do Auxiliar (Opcional)</strong></label>
 							<input type="text" id="edit_auxiliar" class="form-control" required>
 						</div>	
 						<div class="form-group">
-							<label for="opcao">Data registo</label>
+							<label for="opcao"><strong>Data registo</strong><span style="color: red;">*</span></label>
 							<select class="form-control" id="edit-dt-select" required>
 								 <option value="">--Por favor, escolha uma opção--</option>
 								 <option value="31/03">31/03</option>
@@ -295,7 +295,7 @@
 	
 							</select>
 						</div>	
-						<label>OBS:</label>
+						<label><strong>OBS</strong><span style="color: red;">*</span></label>
 						<div class="form-group">
 							<textarea id="w3review-edit" name="w3review-edit" rows="4" cols="58"></textarea>
 						</div>	

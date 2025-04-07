@@ -1095,8 +1095,7 @@ function registrar_AC() {
     const descricao = document.getElementById('descricao').value;
     const obs = document.getElementById('w3review').value;
     let select_aan = document.getElementById("ac-aa-select");
-    let select_p = document.getElementById("ac-p-select");
-    let select_pg = document.getElementById("pg-select");
+    let select_p = document.getElementById("ac-p-select-add");
     let data_inicio = document.getElementById("data_inicio").value;
     let data_fim = document.getElementById("data_fim").value;
 
@@ -1112,7 +1111,6 @@ function registrar_AC() {
     let textoSelecionado_aan = select_aan.value;
     let textoSelecionado_p = select_p.value;
     let data_regisro = data_registo.value;
-    let progresso = select_pg.value;
 
     // Dados para enviar
     const data = {
@@ -1127,8 +1125,8 @@ function registrar_AC() {
         "data_fim": data_fim,
         "X-CSRFToken": getCSRFToken(),
         "obs": obs,
-        "data_registo": data_regisro,
-        "progresso":progresso};
+        "data_registo": data_regisro
+        };
 
     // Configuração da requisição
     $.ajax({

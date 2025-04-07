@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db import connection
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -23,19 +24,31 @@ def create_objetivo_estrategico(request):
                     descricao = request.POST.get("descricao")
                     status = "1"
 
-                    validate = objetivo_estrategico.objects.filter(descricao=descricao).count()
+                    if descricao !="":
 
-                    if validate==0:
-                              objetivo_estrategico.objects.create(
-                                   descricao=descricao,
-                                   status=status
-                              )
-                              message='Registo criado com sucesso!'
-                              status= 'success'
+                              validate = objetivo_estrategico.objects.filter(descricao=descricao).count()
+
+                              if validate==0:
+                                        objetivo_estrategico.objects.create(
+                                             descricao=descricao,
+                                             status=status
+                                        )
+                                        message='Objetivo estrategico criado com sucesso!'
+                                        status= 'success'
+
+                                        return JsonResponse({'status':status, 'message': message })
+
+                              else:
+                                   message='A descrição inserido ja existe!!'
+                                   status= 'error'
+                                   return JsonResponse({'status':status, 'message': message })
+
                     else:
-                         message='A descrição inserido ja existe!!'
-                         status= 'error'
-                    return JsonResponse({'status':status, 'message': message })
+                     message='Erro, tem que preencher o campo obrigatorio!!'
+                     status= 'error'
+                     return JsonResponse({'status':status, 'message': message })
+
+               
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -56,21 +69,31 @@ def editar_objetivo_estrategico(request):
 
      if request.method == "POST":
       try:
-                    descricao = request.POST.get("descricao")
-                    id_oes= request.POST.get("id")
-                    
-                    validate = objetivo_estrategico.objects.filter(descricao=descricao).count()
+               descricao = request.POST.get("descricao")
+               id_oes= request.POST.get("id")
+                     
+               if descricao !="":
 
-                    if validate==0:
-                              OE=get_object_or_404(objetivo_estrategico, id=id_oes)
-                              OE.descricao = descricao
-                              OE.save()
-                              message='Registo alterado com sucesso!'
-                              status= 'success'
-                    else:
-                         message='A descrição inserido ja existe!!'
-                         status= 'error'
-                    return JsonResponse({'status':status , 'message': message })
+                         validate = objetivo_estrategico.objects.filter(descricao=descricao).count()
+
+                         if validate==0:
+                                   OE=get_object_or_404(objetivo_estrategico, id=id_oes)
+                                   OE.descricao = descricao
+                                   OE.save()
+                                   message='Registo alterado com sucesso!'
+                                   status= 'success'
+                                   return JsonResponse({'status':status , 'message': message })
+
+                         else:
+                              message='A descrição inserido ja existe!!'
+                              status= 'error'
+                              return JsonResponse({'status':status , 'message': message })
+
+               else:
+                     message='Erro, tem que preencher o campo obrigatorio!!'
+                     status= 'error'
+                     return JsonResponse({'status':status, 'message': message })
+
                     
 
       except Exception as e:
@@ -148,21 +171,26 @@ def create_rastreabilidade(request):
                     id_tabela_meta = request.POST.get("id_tabela_meta")
                     status = "1"
 
-                    validate = rastreabilidade.objects.filter(descricao=descricao).count()
+                    if descricao !="" and id_tabela_meta !="":
+                              validate = rastreabilidade.objects.filter(descricao=descricao).count()
 
-                    if validate==0:
-                              rastreabilidade.objects.create(
-                                   descricao=descricao,
-                                   status=status,
-                                   id_tabela_meta=id_tabela_meta
-                              )
-                              message='Registo criado com sucesso!'
-                              status= 'success'
+                              if validate==0:
+                                        rastreabilidade.objects.create(
+                                             descricao=descricao,
+                                             status=status,
+                                             id_tabela_meta=id_tabela_meta
+                                        )
+                                        message='Rastreabilidade criado com sucesso!'
+                                        status= 'success'
+                              else:
+                                   message='A descrição inserido ja existe!!'
+                                   status= 'error'
+
+                              return JsonResponse({'status':status, 'message': message })
                     else:
-                          message='A descrição inserido ja existe!!'
-                          status= 'error'
-
-                    return JsonResponse({'status':status, 'message': message })
+                         message='Erro, tem que preencher todos os campos obrigatorios!!'
+                         status= 'error'
+                         return JsonResponse({'status':status, 'message': message })
 
                    
       except Exception as e:
@@ -177,11 +205,15 @@ def editar_rastreabilidade(request):
                     id_ras= request.POST.get("id")
                     id_tabela_meta= request.POST.get("id_tabela_meta")
 
-                    RA=get_object_or_404(rastreabilidade, id=id_ras)
-                    RA.descricao = descricao
-                    RA.id_tabela_meta = id_tabela_meta
-                    RA.save()
-                    return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    if descricao !="" and id_tabela_meta != "":
+                              RA=get_object_or_404(rastreabilidade, id=id_ras)
+                              RA.descricao = descricao
+                              RA.id_tabela_meta = id_tabela_meta
+                              RA.save()
+                              return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    else:
+                         return JsonResponse({'status': 'error', 'message': 'Erro, tem que preencher todos os campos obrigatorios!!'})
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -249,20 +281,27 @@ def create_meta(request):
                     status = "1"
                     id_kpi=request.POST.get("id_kpi")
 
-                    validate = meta.objects.filter(descricao=descricao).count()
+                    if descricao !="" and id_kpi !="":
+ 
+                              validate = meta.objects.filter(descricao=descricao).count()
 
-                    if validate==0:
-                              meta.objects.create(
-                                   descricao=descricao,
-                                   status=status,
-                                   id_kpi=id_kpi
-                              )
-                              message='Registo criado com sucesso!'
-                              status= 'success'
-                    else:
-                         message='A descrição inserido ja existe!!'
+                              if validate==0:
+                                        meta.objects.create(
+                                             descricao=descricao,
+                                             status=status,
+                                             id_kpi=id_kpi
+                                        )
+                                        message='Registo criado com sucesso!'
+                                        status= 'success'
+                              else:
+                                   message='A descrição inserido ja existe!!'
+                                   status= 'error'
+                              return JsonResponse({'status':status, 'message': message })
+                    else: 
+                         message='Erro, tem que preencher todos os campos obrigatorios!!'
                          status= 'error'
-                    return JsonResponse({'status':status, 'message': message })
+                         return JsonResponse({'status':status, 'message': message })
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -290,11 +329,15 @@ def editar_meta(request):
                     id_me= request.POST.get("id")
                     id_kpi= request.POST.get("id_kpi")
 
-                    ME=get_object_or_404(meta, id=id_me)
-                    ME.descricao = descricao
-                    ME.id_kpi = id_kpi
-                    ME.save()
-                    return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    if descricao !="" and id_kpi !="":
+                              ME=get_object_or_404(meta, id=id_me)
+                              ME.descricao = descricao
+                              ME.id_kpi = id_kpi
+                              ME.save()
+                              return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    else:
+                         return JsonResponse({'status': 'error', 'message': 'Erro, tem que preencher todos os campos obrigatorios!!'})
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -352,21 +395,28 @@ def create_kpi(request):
                     id_objeto_estrategico = request.POST.get("id_objeto_estrategico")
                     status = "1"
 
-                    validate = kpi.objects.filter(descricao=descricao).count()
+                    if descricao != "" and id_objeto_estrategico !="":
 
-                    if validate==0:
-                              kpi.objects.create(
-                                   descricao=descricao,
-                                   status=status,
-                                   id_objeto_estrategico=id_objeto_estrategico
-                              )
-                              message='Registo criado com sucesso!'
-                              status= 'success'
+                              validate = kpi.objects.filter(descricao=descricao).count()
+
+                              if validate==0:
+                                        kpi.objects.create(
+                                             descricao=descricao,
+                                             status=status,
+                                             id_objeto_estrategico=id_objeto_estrategico
+                                        )
+                                        message='KPI criado com sucesso!'
+                                        status= 'success'
+                              else:
+                                   message='A descrição inserido ja existe!!'
+                                   status= 'error'
+
                     else:
-                         message='A descrição inserido ja existe!!'
+                         message='Erro, tem que preencher todos os campos obrigatorios!!'
                          status= 'error'
 
                     return JsonResponse({'status': status, 'message': message})
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -380,16 +430,21 @@ def editar_kpi(request):
                     id_oe = request.POST.get("id_objeto_estrategico")
                     id_kpi= request.POST.get("id")
 
-                    
-                    KPI=get_object_or_404(kpi, id=id_kpi)
-                    KPI.descricao = descricao
-                    KPI.id_objeto_estrategico=id_oe
-                    KPI.save()
+                    if descricao !="" and id_oe !="":
+                              KPI=get_object_or_404(kpi, id=id_kpi)
+                              KPI.descricao = descricao
+                              KPI.id_objeto_estrategico=id_oe
+                              KPI.save()
 
-                    message='Registo alterado com sucesso!'
-                    status= 'success'
+                              message='Registo alterado com sucesso!'
+                              status= 'success'
 
-                    return JsonResponse({'status': status, 'message': message})
+                              return JsonResponse({'status': status, 'message': message})
+                    else:
+                         message='Erro, tem que preencher todos os campos obrigatorios!!'
+                         status= 'error'
+                         return JsonResponse({'status': status, 'message': message})
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -459,20 +514,27 @@ def create_OA(request):
                     id_kpi = request.POST.get("id_kpi")
                     status = "1"
 
-                    validate = objetivo_anual.objects.filter(descricao=descricao).count()
+                    if descricao !="" and id_kpi !="":
 
-                    if validate==0:
-                         objetivo_anual.objects.create(
-                                   descricao=descricao,
-                                   status=status,
-                                   id_kpi=id_kpi
-                                  )
-                         message='Registo criado com sucesso!'
-                         status= 'success'
+                              validate = objetivo_anual.objects.filter(descricao=descricao).count()
+
+                              if validate==0:
+                                   objetivo_anual.objects.create(
+                                             descricao=descricao,
+                                             status=status,
+                                             id_kpi=id_kpi
+                                        )
+                                   message='Objetivo anual criado com sucesso!'
+                                   status= 'success'
+                              else:
+                                   message='A descrição inserido ja existe!!'
+                                   status= 'error'
+                              return JsonResponse({'status':status, 'message': message })
                     else:
-                         message='A descrição inserido ja existe!!'
+                         message='Erro, tem que preencher todos os campos obrigatorios!!'
                          status= 'error'
-                    return JsonResponse({'status':status, 'message': message })
+                         return JsonResponse({'status':status, 'message': message })
+
             
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -487,11 +549,15 @@ def editar_OA(request):
                     id_kpi = request.POST.get("id_kpi")
                     status = "1"
 
-                    OE=get_object_or_404(objetivo_anual, id=id_oa)
-                    OE.descricao = descricao
-                    OE.id_kpi=id_kpi
-                    OE.save()
-                    return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    if descricao !="" and id_kpi !="":
+                              OE=get_object_or_404(objetivo_anual, id=id_oa)
+                              OE.descricao = descricao
+                              OE.id_kpi=id_kpi
+                              OE.save()
+                              return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    else:
+                         return JsonResponse({'status': 'error', 'message': 'Erro, tem que preencher todos os campos obrigatorios!!'})
+    
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -564,23 +630,29 @@ def create_AAN(request):
                     data_fim = request.POST.get("data_fim")
                     status = "1"
 
+                    if descricao !="" and id_objetivo_anual !="" and data_inicio !="" and data_fim !="":
 
-                    validate = atividade_anual.objects.filter(descricao=descricao).count()
+                                   validate = atividade_anual.objects.filter(descricao=descricao).count()
 
-                    if validate==0:
-                               atividade_anual.objects.create(
-                                   descricao=descricao,
-                                   status=status,
-                                   id_objetivo_anual=id_objetivo_anual,
-                                   data_inicio=data_inicio,
-                                   data_fim=data_fim,
-                              )
-                               message='Registo criado com sucesso!'
-                               status= 'success'
+                                   if validate==0:
+                                             atividade_anual.objects.create(
+                                                  descricao=descricao,
+                                                  status=status,
+                                                  id_objetivo_anual=id_objetivo_anual,
+                                                  data_inicio=data_inicio,
+                                                  data_fim=data_fim,
+                                             )
+                                             message='Atividade anual criado com sucesso!'
+                                             status= 'success'
+                                   else:
+                                        message='A descrição inserido ja existe!!'
+                                        status= 'error'
+                                   return JsonResponse({'status':status, 'message': message })
                     else:
-                         message='A descrição inserido ja existe!!'
+                         message='Erro, tem que preencher todos os campos obrigatorios!!'
                          status= 'error'
-                    return JsonResponse({'status':status, 'message': message })
+                         return JsonResponse({'status':status, 'message': message })
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -596,13 +668,18 @@ def editar_AAN(request):
                     data_fim = request.POST.get("data_fim")
                     id_ann = request.POST.get("id")
 
-                    AAN=get_object_or_404(atividade_anual, id=id_ann)
-                    AAN.descricao = descricao
-                    AAN.id_objetivo_anual = id_objetivo_anual
-                    AAN.data_inicio = data_inicio
-                    AAN.data_fim = data_fim
-                    AAN.save()
-                    return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    if descricao !="" and id_objetivo_anual !="" and data_inicio !="" and data_fim !="":
+                                   AAN=get_object_or_404(atividade_anual, id=id_ann)
+                                   AAN.descricao = descricao
+                                   AAN.id_objetivo_anual = id_objetivo_anual
+                                   AAN.data_inicio = data_inicio
+                                   AAN.data_fim = data_fim
+                                   AAN.save()
+                                   return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                         
+                    else:
+                          return JsonResponse({'status': 'error', 'message': 'Erro, tem que preencher todos os campos obrigatorios!!'})
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -699,32 +776,38 @@ def create_AC(request):
                     data_inicio = request.POST.get("data_inicio")
                     data_registo = request.POST.get("data_registo")
 
-                    data_fim = request.POST.get("data_fim")
-                    status = "1"
+                    if id_atividade_anual !="" and obs !="" and departamento !="" and nome_responsavel !="" and id_processo !="" and data_inicio !="" and data_registo !="":
 
-                    validate = acao.objects.filter(descricao=descricao).count()
+                              data_fim = request.POST.get("data_fim")
+                              status = "1"
 
-                    if validate==0:
-                              acao.objects.create(
-                                        descricao=descricao,
-                                        status=status,
-                                        id_atividade_anual=id_atividade_anual,
-                                        id_processo=id_processo,
-                                        id_departamento_responsavel=departamento,
-                                        responsavel_nome=nome_responsavel,
-                                        id_departamento_auxiliar=departamento_auxiliar,
-                                        responsavel_auxiliar_nome=nome_responsavel_auxiliar,
-                                        data_inicio=data_inicio,
-                                        data_registo=data_registo,
-                                        obs=obs,
-                                        data_fim=data_fim,
-                                   )
-                              message='Registo criado com sucesso!'
-                              status= 'success'
+                              validate = acao.objects.filter(descricao=descricao).count()
+
+                              if validate==0:
+                                        acao.objects.create(
+                                                  descricao=descricao,
+                                                  status=status,
+                                                  id_atividade_anual=id_atividade_anual,
+                                                  id_processo=id_processo,
+                                                  id_departamento_responsavel=departamento,
+                                                  responsavel_nome=nome_responsavel,
+                                                  id_departamento_auxiliar=departamento_auxiliar,
+                                                  responsavel_auxiliar_nome=nome_responsavel_auxiliar,
+                                                  data_inicio=data_inicio,
+                                                  data_registo=data_registo,
+                                                  obs=obs,
+                                                  data_fim=data_fim,
+                                             )
+                                        message='Ação criado com sucesso!'
+                                        status= 'success'
+                              else:
+                                   message='A descrição inserido ja existe!!'
+                                   status= 'error'
+                              return JsonResponse({'status':status, 'message': message })
                     else:
-                         message='A descrição inserido ja existe!!'
+                         message='Erro, tem que preencher todos os campos obrigatorios!!'
                          status= 'error'
-                    return JsonResponse({'status':status, 'message': message })
+                         return JsonResponse({'status':status, 'message': message })
 
                     
       except Exception as e:
@@ -749,21 +832,26 @@ def editar_AC(request):
                     nome_responsavel_auxiliar = request.POST.get("nome_responsavel_auxiliar")
                     edit_data_registo = request.POST.get("data_registo")
 
-                    AC=get_object_or_404(acao, id=id_ac)
-                    AC.descricao = descricao
-                    AC.id_atividade_anual = id_atividade_anual
-                    AC.obs = obs
-                    AC.id_departamento_responsavel=departamento
-                    AC.responsavel_nome=nome_responsavel
-                    AC.id_departamento_auxiliar=departamento_auxiliar
-                    AC.responsavel_auxiliar_nome=nome_responsavel_auxiliar
-                    AC.id_processo = id_processo
-                    AC.data_inicio = data_inicio
-                    AC.data_fim = data_fim
-                    AC.data_registo = edit_data_registo
-                    AC.save()
+                    if edit_data_registo !="" and descricao !="" and id_atividade_anual !="" and id_processo !="" and obs !="" and data_inicio !="" and data_fim !="" and departamento !="" and nome_responsavel !="":
 
-                    return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                              AC=get_object_or_404(acao, id=id_ac)
+                              AC.descricao = descricao
+                              AC.id_atividade_anual = id_atividade_anual
+                              AC.obs = obs
+                              AC.id_departamento_responsavel=departamento
+                              AC.responsavel_nome=nome_responsavel
+                              AC.id_departamento_auxiliar=departamento_auxiliar
+                              AC.responsavel_auxiliar_nome=nome_responsavel_auxiliar
+                              AC.id_processo = id_processo
+                              AC.data_inicio = data_inicio
+                              AC.data_fim = data_fim
+                              AC.data_registo = edit_data_registo
+                              AC.save()
+
+                              return JsonResponse({'status': 'success', 'message': 'Registo alterado com sucesso!'})
+                    else:
+                         return JsonResponse({'status': 'error', 'message': 'Erro, tem que preencher todos os campos obrigatorios!!'})
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
@@ -797,7 +885,7 @@ def delect_checkbox_AC(request):
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-@csrf_exempt
+@login_required
 def list_home(request):
 
      query = '''
