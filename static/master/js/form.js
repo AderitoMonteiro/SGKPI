@@ -1546,6 +1546,61 @@ function editar_balanco_dir(button) {
 
 }
 
+function ver_balanco_dir(button) {
+
+    const id_bl = document.getElementById('id_bl');
+    let modal_header = document.getElementById("modal-header");
+    modal_header.innerHTML='';
+
+    let editar_balanco=button.getAttribute("data-departamento_responsavel");
+
+    let novaDiv = document.createElement("h4");
+    let but = document.createElement("button");
+    but.setAttribute("type","button");
+    but.setAttribute("class","close");
+    but.setAttribute("data-dismiss","modal");
+    but.setAttribute("aria-hidden","true");
+    but.innerHTML='&times;'
+
+    novaDiv.setAttribute("class","modal-title");
+    novaDiv.innerHTML='BALANÇO GERAL'
+
+    modal_header.appendChild(novaDiv);
+    modal_header.appendChild(but);
+   
+    id_bl.value=button.getAttribute("data-id");
+
+    const data = {
+       "id_balanco_geral":id_bl.value
+       };
+
+       $.ajax({
+           url: 'edit/balanco_g_see/',
+           type: 'POST',
+           data: data,
+           success: function (data) {
+
+               const datajs = JSON.parse(data);
+               let dt = document.getElementById("dr-select");
+
+   
+               quill1.root.innerHTML = datajs[0].fields.descricao_balanco
+               quill4.root.innerHTML = datajs[0].fields.atividade_nao_realizada
+                
+               console.log(datajs[0].fields.data_registo)
+
+               dt.value=datajs[0].fields.data_registo
+               dt.disabled = true;
+
+            },
+           error: function (xhr, status, error) {
+
+               alert('Erro: ' + xhr.responseJSON.message);
+           } 
+       });
+
+}
+
 
 function block_balanco_dir(button) {
 
@@ -1608,13 +1663,24 @@ function block_balanco_dir(button) {
 function balanco_geral() {
 
     const balanco = quill4.root.innerHTML;
+    const atividade_n_realizada= quill1.root.innerHTML;
+
+    let field_1= new Array(5).fill(0);
+    let field_2=new Array(5).fill(0);
+
+    field_1=quill4.getText();
+    field_2=quill4.getText();
+
     let data_registo = document.getElementById("bg-select").value;
 
     console.log(data_registo)
 
     const data = {
-        "balanco": balanco,
-        "data_registo": data_registo,
+            "balanco": balanco,
+            "data_registo": data_registo,
+            "atividade_n_realizada": atividade_n_realizada,
+            "field_1": field_1,
+            "field_2": field_2
         };
 
     

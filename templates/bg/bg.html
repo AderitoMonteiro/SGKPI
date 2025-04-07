@@ -7,10 +7,6 @@
 					<div class="col-sm-6">
 						<h2><b>BALANÇOS</b></h2>
 					</div>
-
-					<div class="col-sm-6" style="text-align:right !important;">
-						<a href="#editEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE254;</i> <span>Balanço</span></a>
-					</div>
 					
 				</div>
 			</div>
@@ -19,39 +15,24 @@
 					<tr>
 						
 						<th>ID</th>
-						<th>OBJETIVO ANUAL</th>
-						<th>ATIVIDADE ANUAL</th>
-						<th>PRAZO INICIO</th>
-						<th>PRAZO FIM</th>
-						<th>Ação</th>
-						<th>PRAZO INICIO</th>
-						<th>PRAZO FIM</th>
-						<th>PROCESSO</th>
-						<th>AREA</th>
+						<th>BALANÇO GERAL</th>
+						<th>ATIVIDADE NÃO REALIZADAS</th>
 						<th>DATA REGISTO</th>
 						<th>AÇÃO</th>
 
 					</tr>
 				</thead>
 				<tbody>
-				{% for ac_list in acao %}
+				{% for bg_list in dir_balanco_geral %}
 					<tr>
 						
-						<td>{{ac_list.id}}</td>
-						<td>{{ac_list.objetivo_anual}}</td>
-						<td>{{ac_list.atividade_anual}}</td>
-						<td>{{ac_list.data_inicio_as}}</td>
-						<td>{{ac_list.data_fim_as}}</td>
-						<td>{{ac_list.acao}}</td>
-						<td>{{ac_list.data_inicio_ac}}</td>
-						<td>{{ac_list.data_fim_ac}}</td>
-						<td>{{ac_list.processo}}</td>
-						<td>{{ac_list.departamento_responsavel}}</td>
-						<td>{{ac_list.data_registo}}</td>
+						<td>{{bg_list.id}}</td>
+						<td>{{bg_list.field_balanco|slice:":10"}}...</td>
+						<td>{{bg_list.field_atividade|slice:":10"}}...</td>
+						<td>{{bg_list.data_registo}}</td>
 
 						<td>
-							<a href="#seeEmployeeModal"    data-id="{{ ac_list.id }}"  data-departamento_responsavel="{{ ac_list.departamento_responsavel }}" class="edit" onclick="editar_balanco_dir(this)" data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" title="Ver"></i></a>
-							<a href="{{ac_list.action}}"    id="status-value"  data-status="{{ ac_list.status }}" data-id="{{ ac_list.id }}"  class="edit" onclick="block_aan(this)" data-toggle="modal"><i class="{{ ac_list.class }}" id="block_bt"  title="{{ ac_list.title }}"></i></a>
+							<a href="#seeEmployeeModal"    data-id="{{ bg_list.id }}"  data-departamento_responsavel="{{ bg_list.departamento_responsavel }}" class="edit" onclick="ver_balanco_dir(this)" data-toggle="modal"><i class="fa fa-eye" data-toggle="tooltip" title="Ver"></i></a>
 						</td>
 					</tr>
 					{% empty %}
@@ -88,29 +69,27 @@
 			<form>
 				<div id="modal-header" class="modal-header">						
 				</div>
-				<input type="hidden" id="id_acao" class="form-control">
+				<input type="hidden" id="id_bl" class="form-control">
 				<div class="modal-body">	
 					<div class="modal-body">
 					<label><strong>Balanço:</strong></label>				
 					   <div id="editor"></div>
                     </div>
+				
 					<div class="modal-body">											
-					 <label><strong>Constrangimento:</strong></label>
-    					   <div id="editor-c"></div>
-                    </div>
-					<div class="modal-body">											
-						<label><strong>Atividade não  previsto:</strong></label>
-						<div id="editor-ap"></div>
+						<label><strong>Atividades não Realizadas:</strong></label>
+						<div id="editor-bl"></div>
 					</div>
 					<div class="modal-body">
-						<label for="opcao"><strong>Progresso:</strong></strong></label>
-						<select class="form-control" id="pg-select" required>
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 <option value="25%">0-39%</option>
-							 <option value="50%">40-49%</option>
-							 <option value="75%">60-69%</option>
-							 <option value="100%">70-100%</option>
-						</select>
+						<label for="opcao"><strong>Data Registo:</strong></strong></label>
+						<select class="form-control" id="dr-select" required>
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for dr_list in data_registo %}
+   
+							<option value="{{dr_list.id}}">{{dr_list.descricao}}</option>
+
+						   {% endfor %}
+					   </select>
 					</div>	
 				</div>
 				<div class="modal-footer">
@@ -120,87 +99,5 @@
 			  </div>
 			</form>
 </div>
-</div>
-<div id="blockEmployeeModal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="alert" id="alerta-block" style="display: none;">
-		</div>
-		<div class="modal-content">
-			<form>
-				<div class="modal-header">						
-					<h4 class="modal-title">Bloquear balanço</h4>
-					<input type="hidden" id="block_action" class="form-control">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">					
-					<p>Tem a certeza de que pretende bloquear o balanço?</p>
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-danger" value="Bloquear" onclick="block_balanco_dir()">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div id="unblockEmployeeModal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="alert" id="alerta-unblock" style="display: none;">
-		</div>
-		<div class="modal-content">
-			<form>
-				<div class="modal-header">						
-					<h4 class="modal-title">Desloquear balanço</h4>
-					<input type="hidden" id="block_action" class="form-control">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<div class="modal-body">					
-					<p>Tem a certeza de que pretende desbloquear o balanço?</p>
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-danger" value="Bloquear" onclick="block_balanco_dir()">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
-<div id="editEmployeeModal" class="modal fade">
-	<div class="modal-dialog">
-		<div class="alert" id="alerta-bl" style="display: none;">
-		</div>
-		<div class="modal-content">
-			<form>
-				<div class="modal-header">						
-					<h4 class="modal-title">Balanço Geral</h4>
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				</div>
-				<input type="hidden" id="id_acao" class="form-control">
-				<div class="modal-body">	
-					<div class="modal-body">
-					<label><strong>Balanço:</strong></label>				
-					   <div id="editor-bl"></div>
-                    </div>
-					
-					<div class="modal-body">
-						<label for="opcao">Data registo</label>
-						<select class="form-control" id="bg-select" required>
-							 <option value="">--Por favor, escolha uma opção--</option>
-							 {% for dr_list in data_registo %}
-	
-							 <option value="{{dr_list.id}}">{{dr_list.descricao}}</option>
-
-							{% endfor %}
-						</select>
-
-					</div>	
-				</div>
-				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input  class="btn btn-info" onclick="balanco_geral()" value="Guardar">
-				</div>
-			  </div>
-			</form>
-		</div>
 </div>
 
