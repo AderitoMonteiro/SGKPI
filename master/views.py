@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 
 
 
+
 #start modulo objetivo_estrategico
 
 def master_view(request):
