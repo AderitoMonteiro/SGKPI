@@ -234,6 +234,38 @@ def ver_balanco_geral(request):
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
+@csrf_exempt
+def edit_balanço_geral(request):
+
+     if request.method == "POST":
+      try:
+                      balanco = request.POST.get("balanco")
+                      atividade_n_previsto = request.POST.get("atividade_n_previsto")
+                      id_bl_geral = request.POST.get("id_bl_geral")
+
+                      if balanco !="" and atividade_n_previsto !="":
+                                 bl = get_object_or_404(balanco_geral, id=id_bl_geral)
+
+                                 bl.descricao_balanco=balanco
+                                 bl.field_balanco=request.POST.get("field_1")
+                                 bl.field_atividade=request.POST.get("field_2")
+                                 bl.atividade_nao_realizada=atividade_n_previsto
+                                 bl.save()
+
+                                 message='A balanço alterado com sucesso!!'
+                                 status= 'success'
+
+                                 return JsonResponse({'status':status, 'message': message })
+                      else:
+                           message='Erro, tem que preencher todos os campos obrigatorios!!'
+                           status= 'error'
+
+                           return JsonResponse({'status':status, 'message': message })
+
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
 
 
 
