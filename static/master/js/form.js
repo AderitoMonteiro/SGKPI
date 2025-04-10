@@ -1311,7 +1311,6 @@ function balanco_model() {
         "balanco": balanco,
         "constrangimento": contrangimento,
         "atividade_previsto": atividade_previsto,
-        "atividade_previsto": atividade_previsto,
         "progresso": progresso,
         "id_acao":id_acao,
         "data_registo":data_registo
@@ -1770,12 +1769,12 @@ function bloquear_balanco(button) {
 function balanco_geral() {
 
     const balanco = quill5.root.innerHTML;
-    const atividade_n_realizada= quill1.root.innerHTML;
+    const atividade_n_realizada= quill4.root.innerHTML;
 
-    let field_1= new Array(5).fill(0);
-    let field_2=new Array(5).fill(0);
+    let field_1;
+    let field_2;
 
-    field_1=quill4.getText();
+    field_1=quill5.getText();
     field_2=quill4.getText();
 
     let data_registo = document.getElementById("bg-select").value;

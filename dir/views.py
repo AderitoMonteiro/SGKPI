@@ -8,13 +8,15 @@ from master.models import data_registo
 from .models import balanco_geral
 from django.http import JsonResponse
 from django.core.serializers import serialize
+from django.contrib.auth.decorators import login_required
 
 
 
 
 
 
-@csrf_exempt
+
+@login_required
 def list_home(request):
 
          query = '''
@@ -102,7 +104,7 @@ def mudar_balanço(request):
 
                       else:
                          bl.status=0
-                         message='A balanço bloqueada com sucesso!!'
+                         message='Balanço bloqueada com sucesso!!'
                          status= 'success'
                          bl.save()
 
@@ -193,7 +195,7 @@ def balanco_g(request):
                                                                   message='A balanço geral registado com sucesso!!'
                                                                   status= 'success'
                                                          else:
-                                                                  message='Erro, a ainda balanço que não foi bloqueada!!'
+                                                                  message='Erro, tem que bloquear balanço referente a data registo!!'
                                                                   status= 'error'
                                           else:
                                                    message='Erro, data resgisto invalido!!'
@@ -209,8 +211,7 @@ def balanco_g(request):
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-
-@csrf_exempt
+@login_required
 def list_balanco_geral(request):
 
          query = '''

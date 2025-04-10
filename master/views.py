@@ -54,7 +54,7 @@ def create_objetivo_estrategico(request):
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-
+@login_required
 def list_create_objetivo_estrategico(request):
 
     oes_list = objetivo_estrategico.objects.all()
@@ -128,19 +128,10 @@ def delete_checkbox_objetivo_estrategico(request):
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-def list_create_objetivo_estrategico(request):
-
-    oes_list = objetivo_estrategico.objects.all()
-    paginator = Paginator(oes_list, 7)
-
-    page_number = request.GET.get("page")  # Obter o número da página da URL
-    oes = paginator.get_page(page_number)
-
-    return render(request, "master/GOE/index.html", {"objetivo_estrategico":oes})
-
 #end modulo objetivo_estrategico
 
 #start modulo Rastreabilidade
+@login_required
 def list_rastreabilidade(request):
 
      query = '''
@@ -251,6 +242,7 @@ def delete_checkbox_rastreabilidade(request):
 #End modulo Rastreabilidade
 #start modulo Mapeamento 
 
+@login_required
 def list_meta(request):
      query = '''
                select ME.id as id, ME.descricao as descricao, KPI.descricao as kpi, KPI.id as id_kpi
@@ -359,7 +351,7 @@ def delete_checkbox_meta(request):
 #end meta
 
 #start kpi
-
+@login_required
 def list_kpi(request):
 
      query = '''
@@ -591,7 +583,7 @@ def delete_checkbox_OA(request):
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
-@csrf_exempt
+@login_required
 def list_AAN(request):
 
      query = '''
@@ -716,7 +708,7 @@ def delete_checkbox_AAN(request):
 
 #start acao
 
-@csrf_exempt
+@login_required
 def list_AC(request):
 
      query = '''

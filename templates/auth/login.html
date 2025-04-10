@@ -3,12 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Glassmorphism Login Form | CodingNepal</title>
+  <title>LOGIN</title>
   {% load static %} 
   <link rel="stylesheet" href="{%static 'auth/style/style.css'%}">
 </head>
 <body>
-  <div class="wrapper">
+  <div class="wrapper" >
+    {% if erro %}
+      <div class="popup-mensagem" style="color: #f44336 !important;">
+        {{ erro }}
+      </div>
+    {% endif %}
     <form method="post">
       {% csrf_token %}
       <h2>LOGIN</h2>
@@ -25,7 +30,6 @@
           <input type="checkbox" id="remember">
           <p>Remember me</p>
         </label>
-        <a href="#">Forgot password?</a>
       </div>
       <button type="submit">Log In</button>
       <div class="register">
@@ -33,4 +37,4 @@
     </form>
   </div>
 </body>
-</html>n 
+</html> 

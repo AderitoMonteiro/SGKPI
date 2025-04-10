@@ -28,7 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-LOGIN_URL = 'auth/login/'
+LOGIN_URL = '../../../auth/login/'
 
 # Application definition
 
