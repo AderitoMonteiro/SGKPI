@@ -1724,9 +1724,52 @@ function block_balanco_dir(button) {
 
 }
 
+function bloquear_balanco(button) {
+
+    const id_data_registo = document.getElementById('dr-select');
+
+   
+    const data = {
+       "id_data_registo":id_data_registo.value
+       };
+
+       $.ajax({
+           url: 'block/bloquear_balanco/',
+           type: 'POST',
+           data: data,
+           success: function (data) {
+                
+                let divPai = document.getElementById("alerta-block-all");
+                divPai.innerHTML=''
+                let novaDiv = document.createElement("strong");
+
+                    if(data.status=='success')
+                    {
+                            divPai.innerHTML=''
+                            novaDiv.innerHTML = data.message;
+                            divPai.setAttribute("style","display: block!important; background-color: #04AA6D!important;");
+                            divPai.appendChild(novaDiv);
+                            slowReload();
+
+                    }else{
+
+                            divPai.innerHTML=''
+                            novaDiv.innerHTML = data.message;
+                            divPai.setAttribute("style","display: block!important; background-color: #f44336!important;")
+                            divPai.appendChild(novaDiv);
+
+                    }
+            },
+           error: function (xhr, status, error) {
+
+               alert('Erro: ' + xhr.responseJSON.message);
+           } 
+       });
+
+}
 function balanco_geral() {
 
-    const balanco = quill4.root.innerHTML;
+    const balanco = quill5.root.innerHTML;
     const atividade_n_realizada= quill1.root.innerHTML;
 
     let field_1= new Array(5).fill(0);

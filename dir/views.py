@@ -112,6 +112,38 @@ def mudar_balanço(request):
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
+def bloquear_balanco(request):
+
+     if request.method == "POST":
+      try:
+                       data_registo = request.POST.get("id_data_registo")
+
+                       if data_registo !="":
+                              balanco_validate = '''
+                                                UPDATE 
+                                                departamentos_balanco 
+                                                SET status=0 WHERE id_data_registo=%s
+                                                
+                                       '''
+
+                              with connection.cursor() as cursor:
+                                                         cursor.execute(balanco_validate,[data_registo])
+
+                              message='Balanço bloqueada com sucesso!!'
+                              status= 'success'
+
+                              return JsonResponse({'status':status, 'message': message })
+                       else:
+                           message='Erro, tem que selecionar a data de registo!!'
+                           status= 'erro'
+
+                           return JsonResponse({'status':status, 'message': message })
+
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
 def balanco_g(request):
 
      if request.method == "POST":

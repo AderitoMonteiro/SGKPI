@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -53,11 +54,22 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'mysite.urls'
 DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.microsoft.MicrosoftOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_MICROSOFT_GRAPH_KEY = 'CLIENT_ID'
+SOCIAL_AUTH_MICROSOFT_GRAPH_SECRET = 'CLIENT_SECRET'
+SOCIAL_AUTH_MICROSOFT_GRAPH_SCOPE = ['User.Read']
+SOCIAL_AUTH_MICROSOFT_GRAPH_API_VERSION = 'v1.0'
+LOGIN_REDIRECT_URL = '/'
 
 TEMPLATES = [
     {
