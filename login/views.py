@@ -15,7 +15,13 @@ def login_view(request):
             login(request, user)
 
             if user.groups.filter(name='departamento').exists():
-                return redirect('/departamento/list_home/')
+   
+                    return redirect('/departamento/list_home/')
+
+            elif user.groups.filter(name='dir').exists():
+                    return redirect('/dir/list_home/')
+            elif user.groups.filter(name='master').exists():
+                    return redirect('/master/list_home/')
             else:
                 return redirect('/sem-acesso/')
         else:

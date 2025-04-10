@@ -18,7 +18,17 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def list_home(request):
 
-     query = '''
+    user = request.user
+    if user.email=="dezairodrigues@hotmail.com":
+                    departamento="AGI"
+    elif user.email=="esemedo@bcv.cv  ":
+                        departamento="AGI"
+    elif user.email=="vleite@bcv.cv ":
+                        departamento="AAB"
+    elif user.email=="lfortes@bcv.cv":
+                        departamento="AIB"
+
+    query = '''
                  select ac.id as id,
                  p.descricao as processo,
                  aa.descricao as atividade_anual,
@@ -41,11 +51,12 @@ def list_home(request):
                  left join master_objetivo_anual as oa on aa.id_objetivo_anual=oa.id
                  left join master_departamento as ar on ac.id_departamento_responsavel=ar.id
                  left join departamentos_balanco as db on ac.id=db.id_acao
+                 where ar.descricao=%s
 
 
              '''
-     with connection.cursor() as cursor:
-          cursor.execute(query)
+    with connection.cursor() as cursor:
+          cursor.execute(query,[departamento])
 
           colunas = [col[0] for col in cursor.description] 
           resultados = [dict(zip(colunas, row)) for row in cursor.fetchall()]
