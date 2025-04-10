@@ -10,6 +10,7 @@
 
 					<div class="col-sm-6" style="text-align:right !important;">
 						<a href="#editEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE254;</i> <span>Balanço</span></a>
+						<a href="#deleteEmployee" class="btn btn-danger" data-toggle="modal"><i class="fa fa-lock"></i> <span>Bloquear</span></a>						
 					</div>
 					
 				</div>
@@ -207,5 +208,35 @@
 			  </div>
 			</form>
 		</div>
+</div>
+<div id="deleteEmployee" class="modal fade">
+	<div class="modal-dialog">
+		<div class="alert" id="alerta-block-all" style="display: none;">
+		</div>
+		<div class="modal-content">
+			<form>
+				<div class="modal-header">						
+					<h4 class="modal-title">Bloquear Ações</h4>
+					<input id="id_delete" class="form-control" type="hidden">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				</div>
+				<div class="modal-body">					
+					<label for="opcao"><strong>Data Registo:</strong></strong></label>
+						<select class="form-control" id="dr-select" required>
+							<option value="">--Por favor, escolha uma opção--</option>
+							{% for dr_list in data_registo %}
+   
+							<option value="{{dr_list.id}}">{{dr_list.descricao}}</option>
+
+						   {% endfor %}
+					   </select>
+				</div>
+				<div class="modal-footer">
+					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
+					<input class="btn btn-danger" value="Bloquear" onclick="bloquear_balanco()">
+				</div>
+			</form>
+		</div>
+	</div>
 </div>
 

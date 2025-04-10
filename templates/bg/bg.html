@@ -72,12 +72,12 @@
 				<input type="hidden" id="id_bl" class="form-control">
 				<div class="modal-body">	
 					<div class="modal-body">
-					<label><strong>Balanço:</strong></label>				
+					<label><strong>Balanço</strong><span style="color: red;">*</span></label></label>			
 					   <div id="editor"></div>
                     </div>
 				
 					<div class="modal-body">											
-						<label><strong>Atividades não Realizadas:</strong></label>
+						<label><strong>Atividades não Realizadas</strong><span style="color: red;">*</span></label></label>
 						<div id="editor-bl"></div>
 					</div>
 					<div class="modal-body">
@@ -94,7 +94,7 @@
 				</div>
 				<div class="modal-footer">
 					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancelar">
-					<input  class="btn btn-info" onclick="balanco_model()" value="Guardar">
+					<input  class="btn btn-info" onclick="balanco_geral_edit()" value="Guardar">
 				</div>
 			  </div>
 			</form>

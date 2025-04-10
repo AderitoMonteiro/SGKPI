@@ -112,6 +112,38 @@ def mudar_balanço(request):
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
 @csrf_exempt
+def bloquear_balanco(request):
+
+     if request.method == "POST":
+      try:
+                       data_registo = request.POST.get("id_data_registo")
+
+                       if data_registo !="":
+                              balanco_validate = '''
+                                                UPDATE 
+                                                departamentos_balanco 
+                                                SET status=0 WHERE id_data_registo=%s
+                                                
+                                       '''
+
+                              with connection.cursor() as cursor:
+                                                         cursor.execute(balanco_validate,[data_registo])
+
+                              message='Balanço bloqueada com sucesso!!'
+                              status= 'success'
+
+                              return JsonResponse({'status':status, 'message': message })
+                       else:
+                           message='Erro, tem que selecionar a data de registo!!'
+                           status= 'erro'
+
+                           return JsonResponse({'status':status, 'message': message })
+
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
 def balanco_g(request):
 
      if request.method == "POST":
@@ -230,6 +262,38 @@ def ver_balanco_geral(request):
                    
 
                       return JsonResponse(serialize("json", bl),safe=False)
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def edit_balanço_geral(request):
+
+     if request.method == "POST":
+      try:
+                      balanco = request.POST.get("balanco")
+                      atividade_n_previsto = request.POST.get("atividade_n_previsto")
+                      id_bl_geral = request.POST.get("id_bl_geral")
+
+                      if balanco !="" and atividade_n_previsto !="":
+                                 bl = get_object_or_404(balanco_geral, id=id_bl_geral)
+
+                                 bl.descricao_balanco=balanco
+                                 bl.field_balanco=request.POST.get("field_1")
+                                 bl.field_atividade=request.POST.get("field_2")
+                                 bl.atividade_nao_realizada=atividade_n_previsto
+                                 bl.save()
+
+                                 message='A balanço alterado com sucesso!!'
+                                 status= 'success'
+
+                                 return JsonResponse({'status':status, 'message': message })
+                      else:
+                           message='Erro, tem que preencher todos os campos obrigatorios!!'
+                           status= 'error'
+
+                           return JsonResponse({'status':status, 'message': message })
+
 
       except Exception as e:
              return JsonResponse({'status': 'error', 'message': str(e)}, status=400)

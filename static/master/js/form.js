@@ -1354,6 +1354,70 @@ function balanco_model() {
     
 }
 
+function balanco_geral_edit() {
+
+    let balanco = quill1.root.innerHTML;
+    let atividade_n_previsto = quill4.root.innerHTML;
+    let field_1=quill1.getText()
+    let field_2=quill4.getText()
+
+    let id_bl_geral = document.getElementById("id_bl").value;
+  
+    if(quill1.getText().trim()==="")
+    {
+        balanco=""
+    }
+   
+    if(quill4.getText().trim()===""){
+        atividade_n_previsto=""
+    }
+
+    const data = {
+        "balanco": balanco,
+        "atividade_n_previsto": atividade_n_previsto,
+        "id_bl_geral":id_bl_geral,
+        "field_1":field_1,
+        "field_2":field_2
+
+        };
+
+    
+        $.ajax({
+            url: 'edit/edit_balanço_geral/',
+            type: 'POST',
+            data: data,
+            success: function (data) {
+                
+                
+                let divPai = document.getElementById("alerta-edit");
+                divPai.innerHTML=''
+                let novaDiv = document.createElement("strong");
+    
+               if(data.status=='success')
+               {
+                    divPai.innerHTML=''
+                    novaDiv.innerHTML = data.message;
+                    divPai.setAttribute("style","display: block!important; background-color: #04AA6D!important;");
+                    divPai.appendChild(novaDiv);
+    
+                    slowReload();
+    
+               }else{
+    
+                    divPai.innerHTML=''
+                    novaDiv.innerHTML = data.message;
+                    divPai.setAttribute("style","display: block!important; background-color: #f44336!important;")
+                    divPai.appendChild(novaDiv);
+    
+               }
+            },
+            error: function (xhr, status, error) {
+                alert('Erro: ' + xhr.responseJSON.message);
+            }
+        });
+    
+}
+
 function editar_balanco(button) {
 
      const id_acao = document.getElementById('id_acao');
@@ -1660,9 +1724,52 @@ function block_balanco_dir(button) {
 
 }
 
+function bloquear_balanco(button) {
+
+    const id_data_registo = document.getElementById('dr-select');
+
+   
+    const data = {
+       "id_data_registo":id_data_registo.value
+       };
+
+       $.ajax({
+           url: 'block/bloquear_balanco/',
+           type: 'POST',
+           data: data,
+           success: function (data) {
+                
+                let divPai = document.getElementById("alerta-block-all");
+                divPai.innerHTML=''
+                let novaDiv = document.createElement("strong");
+
+                    if(data.status=='success')
+                    {
+                            divPai.innerHTML=''
+                            novaDiv.innerHTML = data.message;
+                            divPai.setAttribute("style","display: block!important; background-color: #04AA6D!important;");
+                            divPai.appendChild(novaDiv);
+                            slowReload();
+
+                    }else{
+
+                            divPai.innerHTML=''
+                            novaDiv.innerHTML = data.message;
+                            divPai.setAttribute("style","display: block!important; background-color: #f44336!important;")
+                            divPai.appendChild(novaDiv);
+
+                    }
+            },
+           error: function (xhr, status, error) {
+
+               alert('Erro: ' + xhr.responseJSON.message);
+           } 
+       });
+
+}
 function balanco_geral() {
 
-    const balanco = quill4.root.innerHTML;
+    const balanco = quill5.root.innerHTML;
     const atividade_n_realizada= quill1.root.innerHTML;
 
     let field_1= new Array(5).fill(0);
