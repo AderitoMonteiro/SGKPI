@@ -10,7 +10,7 @@
 
 					<div class="col-sm-6" style="text-align:right !important;">
 						<a href="#editEmployeeModal" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE254;</i> <span>Balanço</span></a>
-						<a href="#deleteEmployee" class="btn btn-danger" data-toggle="modal"><i class="fa fa-lock"></i> <span>Bloquear</span></a>						
+						<a href="#deleteEmployee" class="btn btn-danger" data-toggle="modal"><i class="fa fa-lock"></i> <span>Acões Geral</span></a>						
 					</div>
 					
 				</div>
@@ -216,24 +216,45 @@
 		<div class="modal-content">
 			<form>
 				<div class="modal-header">						
-					<h4 class="modal-title">Bloquear Ações</h4>
 					<input id="id_delete" class="form-control" type="hidden">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				</div>
 				<div class="modal-body">					
-					<label for="opcao"><strong>Data Registo:</strong></strong></label>
-						<select class="form-control" id="dr-select" required>
-							<option value="">--Por favor, escolha uma opção--</option>
+					<table class="table table-striped table-hover">
+						<thead>
+							<tr>
+								<th>
+									<span class="custom-checkbox">
+										<input type="checkbox" id="selectAll">
+										<label for="selectAll"></label>
+									</span>
+								</th>
+								<th>DATA REGISTO</th>
+								
+							</tr>
+						</thead>
+						<tbody>
 							{% for dr_list in data_registo %}
-   
-							<option value="{{dr_list.id}}">{{dr_list.descricao}}</option>
+							<tr>
+								
+								<td>
+									<span class="custom-checkbox">
+										<input type="checkbox" id="checkbox{{ dr_list.id }}" class="area-checkbox" name="options[]" value="{{ dr_list.id }}" {{ dr_list.status }}>
+										<label for="checkbox{{ dr_list.id }}"></label>
+									</span>
+								</td>
+								<td>{{dr_list.descricao}}</td>
 
-						   {% endfor %}
-					   </select>
+
+							</tr>		
+							{% endfor %}
+									
+						</tbody>
+					</table>
 				</div>
 				<div class="modal-footer">
-					<input type="button" class="btn btn-default" data-dismiss="modal" value="Cancel">
-					<input class="btn btn-danger" value="Bloquear" onclick="bloquear_balanco()">
+					<input class="btn btn-danger" value="Bloquear" onclick="bloquear_balanco(this)">
+					<input class="btn btn-success" value="Desbloquear" onclick="desbloquear_balanco(this)">
 				</div>
 			</form>
 		</div>

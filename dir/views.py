@@ -57,15 +57,17 @@ def list_home(request):
 
                      '''
          data_rg = '''
-                             select 
+                              select
+                              DISTINCT
                               dr.id,
-                              dr.descricao
+                              dr.descricao,
+                              CASE
+                              WHEN CAST((select count(*) from departamentos_balanco where departamentos_balanco.id_data_registo=dr.id and departamentos_balanco.status=1 ) AS int) > 0  THEN ""
+                              WHEN CAST((select count(*) from departamentos_balanco where departamentos_balanco.id_data_registo=dr.id and departamentos_balanco.status=0 ) AS int) > 0  THEN "checked"
+                              ELSE ""
+                              END as status
                               from master_data_registo as dr
-                              where dr.id not in(
-                                 SELECT 
-                                 data_registo
-                                 FROM dir_balanco_geral WHERE YEAR(datecreate)=YEAR(NOW())
-                              )
+                              
                   '''
          with connection.cursor() as cursor:
                         cursor.execute(query)
@@ -120,23 +122,41 @@ def bloquear_balanco(request):
       try:
                        data_registo = request.POST.get("id_data_registo")
 
-                       if data_registo !="":
-                              balanco_validate = '''
-                                                UPDATE 
-                                                departamentos_balanco 
-                                                SET status=0 WHERE id_data_registo=%s
-                                                
-                                       '''
-
-                              with connection.cursor() as cursor:
-                                                         cursor.execute(balanco_validate,[data_registo])
-
+                       if data_registo:
+                              id_ar = data_registo.split(",") 
+                              balanco.objects.filter(id_data_registo__in=id_ar).update(status=0)
+                                 
                               message='Balanço bloqueada com sucesso!!'
                               status= 'success'
 
                               return JsonResponse({'status':status, 'message': message })
                        else:
                            message='Erro, tem que selecionar a data de registo!!'
+                           status= 'erro'
+
+                           return JsonResponse({'status':status, 'message': message })
+
+
+      except Exception as e:
+             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+@csrf_exempt
+def desbloquear_balanco(request):
+
+     if request.method == "POST":
+      try:
+                       data_registo = request.POST.get("id_data_registo")
+
+                       if data_registo:
+                              id_ar = data_registo.split(",") 
+                              balanco.objects.filter(id_data_registo__in=id_ar).update(status=1)
+                                 
+                              message='Balanço desbloqueada com sucesso!!'
+                              status= 'success'
+
+                              return JsonResponse({'status':status, 'message': message })
+                       else:
+                           message='Erro, tem que ter pelo menos um data registo não selecionado!!'
                            status= 'erro'
 
                            return JsonResponse({'status':status, 'message': message })

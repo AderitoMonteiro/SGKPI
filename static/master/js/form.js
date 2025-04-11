@@ -1725,11 +1725,18 @@ function block_balanco_dir(button) {
 
 function bloquear_balanco(button) {
 
-    const id_data_registo = document.getElementById('dr-select');
+
+    let id_data_registo = document.querySelectorAll(".area-checkbox:checked");
+    if (id_data_registo.length === 0) {
+        alert("Selecione pelo menos um para eliminar.");
+        return;
+    }
+
+    let id_data_registos = Array.from(id_data_registo).map(checkbox => checkbox.value).join(",");
 
    
     const data = {
-       "id_data_registo":id_data_registo.value
+       "id_data_registo":id_data_registos
        };
 
        $.ajax({
@@ -1764,6 +1771,61 @@ function bloquear_balanco(button) {
                alert('Erro: ' + xhr.responseJSON.message);
            } 
        });
+
+}
+
+function desbloquear_balanco(button) {
+
+
+    let id_data_registo = document.querySelectorAll('input[type="checkbox"][name="options[]"]');
+   
+    const naoSelecionados = [];
+
+    id_data_registo.forEach(checkbox => {
+      if (!checkbox.checked) {
+        naoSelecionados.push(checkbox.value);
+      }
+    });
+
+
+    const data = {
+        "id_data_registo": naoSelecionados.join(", ")
+
+        };
+ 
+        $.ajax({
+            url: 'block/desbloquear_balanco/',
+            type: 'POST',
+            data: data,
+            success: function (data) {
+                 
+                 let divPai = document.getElementById("alerta-block-all");
+                 divPai.innerHTML=''
+                 let novaDiv = document.createElement("strong");
+ 
+                     if(data.status=='success')
+                     {
+                             divPai.innerHTML=''
+                             novaDiv.innerHTML = data.message;
+                             divPai.setAttribute("style","display: block!important; background-color: #04AA6D!important;");
+                             divPai.appendChild(novaDiv);
+                             slowReload();
+ 
+                     }else{
+ 
+                             divPai.innerHTML=''
+                             novaDiv.innerHTML = data.message;
+                             divPai.setAttribute("style","display: block!important; background-color: #f44336!important;")
+                             divPai.appendChild(novaDiv);
+ 
+                     }
+             },
+            error: function (xhr, status, error) {
+ 
+                alert('Erro: ' + xhr.responseJSON.message);
+            } 
+        });
+   
 
 }
 function balanco_geral() {
