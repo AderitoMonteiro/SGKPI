@@ -235,6 +235,8 @@ function block_aan(button) {
 
     id_acao = button.getAttribute("data-id");
     document.getElementById("block_action").value = id_acao;
+    status_value = button.getAttribute("data-status");
+    document.getElementById("status").value = status_value;
 
 }
 
@@ -1668,10 +1670,13 @@ function ver_balanco_dir(button) {
 function block_balanco_dir(button) {
 
     const id_acao = document.getElementById('block_action');
-    const link= document.getElementById('status-value');
-    const status = link.getAttribute("data-status");
+    const link= document.getElementById('status');
+    const status = link.value;
 
     let id_alert;
+
+    
+    console.log("status "  + status)
 
 
     if(status=="1"){
@@ -1682,6 +1687,8 @@ function block_balanco_dir(button) {
 
         id_alert="alerta-unblock";
     }
+
+    console.log("id_alert "  + id_alert)
 
     const data = {
        "id_acao":id_acao.value
