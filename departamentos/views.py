@@ -19,6 +19,7 @@ from django.contrib.auth.decorators import login_required
 def list_home(request):
 
     user = request.user
+    departamento=""
     if user.email=="dezairodrigues@hotmail.com":
                     departamento="AGI"
     elif user.email=="esemedo@bcv.cv  ":
@@ -67,7 +68,8 @@ def list_home(request):
           print(paginator)
           page_number = request.GET.get("page")  
           oa = paginator.get_page(page_number)
-          
+
+
           return render(request, "departamentos/index.html", {"acao":oa}) 
 
 @csrf_exempt
